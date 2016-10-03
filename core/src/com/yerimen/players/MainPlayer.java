@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.yerimen.server.Observable;
 import com.yerimen.textures.PlayerTexture;
 
+import static javafx.scene.transform.Transform.translate;
+
 public class MainPlayer extends Player implements Observable {
 
     public MainPlayer(PlayerTexture playerTexture, PlayerStatus playerStatus, Vector2 position){
@@ -24,10 +26,4 @@ public class MainPlayer extends Player implements Observable {
             this.notify(this.toJson());
         }
     }
-
-    public void render(SpriteBatch spriteBatch) {
-        this.draw(spriteBatch);
-    }
-
-
 }

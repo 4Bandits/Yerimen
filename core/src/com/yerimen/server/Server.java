@@ -95,7 +95,7 @@ public class Server implements Observer{
             Double y = data.getDouble("y");
             String direction = data.getString("direction");
             if(players.get(playerId) != null){
-                players.get(playerId).setPosition(x.floatValue(),y.floatValue());
+                players.get(playerId).move(x.floatValue(),y.floatValue());
                 players.get(playerId).setDirection(direction);
             }
         } catch (JSONException e) {

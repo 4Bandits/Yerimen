@@ -12,8 +12,8 @@ public class PlayerJsonBuilder {
     private String name;
 
     public PlayerJsonBuilder(Player player){
-        x = player.getX();
-        y = player.getY();
+        x = player.getXPosition();
+        y = player.getYPosition();
         health = player.getStatus().getHp();
         direction = player.getDirection();
         name = player.getName();
