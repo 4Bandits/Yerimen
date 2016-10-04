@@ -7,15 +7,18 @@ import com.yerimen.textures.TextureManager;
 
 public class NullPlayer extends Player {
 
-    public NullPlayer(){
-        super(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0,0));
+    public NullPlayer() {
+        super(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0, 0));
     }
 
-    public void update(float deltaTime, OrthographicCamera camera){}
-    public void render(SpriteBatch spriteBatch) {}
+    public void update(float deltaTime, OrthographicCamera camera) {
+    }
 
-    public Vector2 getPosition(){
-        return new Vector2(0,0);
+    public void render(SpriteBatch spriteBatch) {
+    }
+
+    public Vector2 getPosition() {
+        return new Vector2(0, 0);
     }
 
 }

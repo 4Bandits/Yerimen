@@ -1,12 +1,10 @@
 package com.yerimen.players;
 
-import com.badlogic.gdx.assets.loaders.AsynchronousAssetLoader;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import com.yerimen.json.PlayerJsonBuilder;
 import com.yerimen.textures.PlayerTexture;
 import org.json.JSONObject;
