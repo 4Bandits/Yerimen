@@ -5,10 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.textures.TextureManager;
 
-public class NullPlayer extends MainPlayer {
+public class NullPlayer extends Player {
 
     public NullPlayer(){
-        super(TextureManager.getInstance().getWerewolfTexture(), new PlayerStatus(), new Vector2(0,0));
+        super(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0,0));
     }
 
     public void update(float deltaTime, OrthographicCamera camera){}

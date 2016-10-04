@@ -1,64 +1,50 @@
 package com.yerimen.players;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.yerimen.json.PlayerJsonBuilder;
+import com.yerimen.server.Observable;
 import com.yerimen.textures.PlayerTexture;
-import org.json.JSONObject;
 
-public class Player {
+public class Player extends Character implements Observable {
 
-    private PlayerStatus status;
-    private PlayerTexture playerTexture;
-    private String direction;
-    private Sprite sprite;
 
-    public Player(PlayerTexture playerTexture, PlayerStatus playerStatus, Vector2 position){
-        sprite = new Sprite(playerTexture.getTexture());
-        this.playerTexture = playerTexture;
-        this.sprite.setPosition(position.x, position.y);
-        this.status = playerStatus;
-        this.direction = "left";
+    float stateTime;
+    public Player(PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position){
+        super(playerTexture, playerStatus, position);
     }
 
-    public void render(SpriteBatch spriteBatch) {
-        this.sprite.draw(spriteBatch);
-    }
+    public void update(float delta, OrthographicCamera camera){
+        isMoving = false;
+        PlayerTexture texture = getPlayerTexture();
+        stateTime+=delta;
+      //  setCurrentFrame(texture.getStandBackAnimation().getKeyFrame(delta,true));
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            this.translate(0,-1);
+            this.notify(this.toJson());
+            setCurrentFrame(texture.getWalkBackAnimation().getKeyFrame(stateTime,true));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            this.translate(-1,0);
+            this.notify(this.toJson());
+            setCurrentFrame(texture.getWalkRightAnimation().getKeyFrame(stateTime,true));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            this.translate(0,1);
+            this.notify(this.toJson());
+            setCurrentFrame(texture.getWalkFrontAnimation().getKeyFrame(stateTime,true));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            this.translate(1,0);
+            this.notify(this.toJson());
+            setCurrentFrame(texture.getWalkLeftAnimation().getKeyFrame(stateTime,true));
+        }
+        if(isMoving){
 
-    public Vector2 getPosition(){
-        return new Vector2(this.sprite.getX(), this.sprite.getY());
-    }
+        }else{
 
-    public PlayerStatus getStatus() {
-        return status;
-    }
-
-    public String getName(){
-        return this.playerTexture.getName();
-    }
-
-    public String getDirection(){
-        return this.direction;
-    }
-
-    public void setDirection(String direction) {this.direction = direction; }
-
-    public void move(float x, float y){
-        sprite.setPosition(x,y);
-    }
-    public float getXPosition(){
-        return sprite.getY();
-    }
-
-    public float getYPosition(){
-        return sprite.getY();
-    }
-    JSONObject toJson(){
-        return new PlayerJsonBuilder(this).build();
-    }
-
-    public void translate(float x, float y) {
-        sprite.translate(x,y);
+        }
     }
 }

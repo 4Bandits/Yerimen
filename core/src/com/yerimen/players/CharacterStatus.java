@@ -1,6 +1,6 @@
 package com.yerimen.players;
 
-public class PlayerStatus {
+public class CharacterStatus {
 
     private Double hp = 100d;
     private Double mana = 100d;

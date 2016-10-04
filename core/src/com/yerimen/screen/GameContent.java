@@ -2,14 +2,14 @@ package com.yerimen.screen;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.yerimen.players.MainPlayer;
+import com.yerimen.players.Player;
 import com.yerimen.players.NullPlayer;
 import com.yerimen.server.Server;
 
 public class GameContent {
 
     private Server server;
-    private MainPlayer mainPlayer;
+    private Player mainPlayer;
 
 
     public GameContent() {
@@ -30,10 +30,10 @@ public class GameContent {
         this.server= new Server(this);
     }
 
-    public void setMainPlayer(MainPlayer mainPlayer){
+    public void setMainPlayer(Player mainPlayer){
         this.mainPlayer = mainPlayer;
     }
 
-    public MainPlayer getMainPlayer() {return this.mainPlayer; }
+    public Player getMainPlayer() {return this.mainPlayer; }
 
 }

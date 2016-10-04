@@ -1,6 +1,6 @@
 package com.yerimen.json;
 
-import com.yerimen.players.Player;
+import com.yerimen.players.Character;
 import org.json.JSONObject;
 
 public class PlayerJsonBuilder {
@@ -11,7 +11,7 @@ public class PlayerJsonBuilder {
     private String direction;
     private String name;
 
-    public PlayerJsonBuilder(Player player){
+    public PlayerJsonBuilder(Character player){
         x = player.getXPosition();
         y = player.getYPosition();
         health = player.getStatus().getHp();

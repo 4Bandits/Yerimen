@@ -1,7 +1,7 @@
 package com.yerimen.textures;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.yerimen.players.PlayerStatus;
+import com.yerimen.players.CharacterStatus;
 
 public class TextureManager {
 
@@ -13,21 +13,21 @@ public class TextureManager {
     private PlayerTexture werewolfTexture;
     private Texture vampire;
     private PlayerTexture vampireTexture;
-    private PlayerStatus wizardStatus;
-    private PlayerStatus werewolfStatus;
-    private PlayerStatus vampireStatus;
+    private CharacterStatus wizardStatus;
+    private CharacterStatus werewolfStatus;
+    private CharacterStatus vampireStatus;
 
 
     protected TextureManager(){
         wizard = new Texture("images/wizard.png");
         wizardTexture = new WizardTexture(wizard, 78);
-        wizardStatus = new PlayerStatus();
+        wizardStatus = new CharacterStatus();
         werewolf = new Texture("images/werewolf.png");
         werewolfTexture = new WerewolfTexture(werewolf, 80);
-        werewolfStatus = new PlayerStatus();
+        werewolfStatus = new CharacterStatus();
         vampire = new Texture("images/vamp.png");
         vampireTexture = new VampireTexture(vampire, 48);
-        vampireStatus = new PlayerStatus();
+        vampireStatus = new CharacterStatus();
     }
 
     public static TextureManager getInstance() {
@@ -61,15 +61,15 @@ public class TextureManager {
         return vampireTexture;
     }
 
-    public PlayerStatus getWizardStatus() {
+    public CharacterStatus getWizardStatus() {
         return wizardStatus;
     }
 
-    public PlayerStatus getWerewolfStatus() {
+    public CharacterStatus getWerewolfStatus() {
         return werewolfStatus;
     }
 
-    public PlayerStatus getVampireStatus() {
+    public CharacterStatus getVampireStatus() {
         return vampireStatus;
     }
 }

@@ -11,10 +11,10 @@ public class WerewolfTexture extends PlayerTexture{
         standBackAnimation = new Animation(0.3f, getFrames(texture, 3, 1, size));
         standLeftAnimation = new Animation(0.3f, getFrames(texture, 2, 1, size));
         standRightAnimation = new Animation(0.3f, getFrames(texture, 2, 1, size));
-        walkFrontAnimation = new Animation(0.3f, getFrames(texture, 0, 2, size));
-        walkBackAnimation = new Animation(0.3f, getFrames(texture, 3, 2, size));
-        walkLeftAnimation = new Animation(0.3f, getFrames(texture, 2, 2, size));
-        walkRightAnimation = new Animation(0.3f, getFrames(texture, 2, 2, size));
+        walkFrontAnimation = new Animation(0.3f, getFrames(texture, 0, 4, size));
+        walkBackAnimation = new Animation(0.3f, getFrames(texture, 3, 4, size));
+        walkLeftAnimation = new Animation(0.3f, getFrames(texture, 1, 4, size));
+        walkRightAnimation = new Animation(0.3f, getFrames(texture, 2, 4, size));
         /*attackFrontAnimation = new Animation(0.3f, getFrames(texture, 3, 4, size));
         attackBackAnimation = new Animation(0.3f, getFrames(texture, 2, 4, size));
         attackLeftAnimation = new Animation(0.3f, getFrames(texture, 1, 4, size));

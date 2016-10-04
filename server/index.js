@@ -14,6 +14,7 @@ io.on('connection', function(socket){
 	    data.id = socket.id;
 	    socket.broadcast.emit('playerMoved', data);
         updatePlayer(data);
+        log("player moved x: " +  data.x  + " y: " + data.y)
 	});
 	socket.on('takeDamage', function(data){
 	    data.id = socket.id;

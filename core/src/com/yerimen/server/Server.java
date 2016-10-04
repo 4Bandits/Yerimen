@@ -1,9 +1,9 @@
 package com.yerimen.server;
 
 import com.badlogic.gdx.math.Vector2;
-import com.yerimen.players.MainPlayer;
+import com.yerimen.players.Character;
 import com.yerimen.players.Player;
-import com.yerimen.players.PlayerStatus;
+import com.yerimen.players.CharacterStatus;
 import com.yerimen.screen.GameContent;
 import com.yerimen.textures.TextureManager;
 import io.socket.client.IO;
@@ -19,7 +19,7 @@ import java.util.List;
 public class Server implements Observer{
 
     private Socket socket;
-    private HashMap<String, Player> players;
+    private HashMap<String, Character> players;
     private GameContent gameContent;
 
     public Server(GameContent gameContent){
@@ -48,7 +48,7 @@ public class Server implements Observer{
     }
 
     private void connectionEvent(){
-        MainPlayer mainPlayer =new MainPlayer(TextureManager.getInstance().getWerewolfTexture(), TextureManager.getInstance().getWerewolfStatus() , new Vector2(0,0));
+        Player mainPlayer =new Player(TextureManager.getInstance().getWerewolfTexture(), TextureManager.getInstance().getWerewolfStatus() , new Vector2(0,0));
         this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
     }
@@ -57,9 +57,9 @@ public class Server implements Observer{
         JSONObject data = (JSONObject) args[0];
         try {
              String newPlayerID = data.getString("id");
-             players.put(newPlayerID, new Player(TextureManager.getInstance().getWerewolfTexture(), new PlayerStatus(), new Vector2(0,0)));
+             players.put(newPlayerID, new Character(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0,0)));
         } catch (JSONException e) {
-            throw new RuntimeException("SocketIO - Adding new Player Error");
+            throw new RuntimeException("SocketIO - Adding new Character Error");
         }
     }
 
@@ -69,7 +69,7 @@ public class Server implements Observer{
             String anotherPlayerID = data.getString("id");
             players.remove(anotherPlayerID);
         } catch (JSONException e) {
-            throw new RuntimeException("SocketIO - Remove old Player Error");
+            throw new RuntimeException("SocketIO - Remove old Character Error");
         }
     }
 
@@ -79,7 +79,7 @@ public class Server implements Observer{
             for(int i = 0; i < objects.length(); i++){
                 float x = ((Double) objects.getJSONObject(i).getDouble("x")).floatValue();
                 float y = ((Double) objects.getJSONObject(i).getDouble("y")).floatValue();
-                Player anotherPlayer = new Player(TextureManager.getInstance().getWerewolfTexture(), new PlayerStatus(), new Vector2(x,y));
+                Character anotherPlayer = new Character(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(x,y));
                 players.put(objects.getJSONObject(i).getString("id"), anotherPlayer);
             }
         }catch (JSONException e){
@@ -99,11 +99,11 @@ public class Server implements Observer{
                 players.get(playerId).setDirection(direction);
             }
         } catch (JSONException e) {
-            throw new RuntimeException("SocketIO - Move Player Error");
+            throw new RuntimeException("SocketIO - Move Character Error");
         }
     }
 
-    public List<Player> getPlayers(){
+    public List<Character> getPlayers(){
         return new ArrayList<>(this.players.values());
     }
 
