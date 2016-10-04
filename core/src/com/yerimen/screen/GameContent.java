@@ -19,11 +19,13 @@ public class GameContent {
 
     public void update(float delta, OrthographicCamera camera) {
         mainPlayer.update(delta, camera);
+        this.server.getPowers().forEach(power -> power.update(delta));
     }
 
     public void render(SpriteBatch batch) {
         mainPlayer.render(batch);
         this.server.getPlayers().forEach(player -> player.render(batch));
+        this.server.getPowers().forEach(power -> power.render(batch));
     }
 
     private void initializeServer() {

@@ -1,5 +1,11 @@
 package com.yerimen.players;
 
+import com.yerimen.powers.FireBall;
+import com.yerimen.powers.Power;
+
+import java.util.Arrays;
+import java.util.List;
+
 public class PlayerStatus {
 
     private Double hp = 100d;
@@ -10,6 +16,7 @@ public class PlayerStatus {
     private Integer ad = 10;
     private Integer armor = 10;
     private Integer magicResistance = 10;
+    private List<Class<? extends Power>> powers = Arrays.asList(FireBall.class);
 
     public Double getHp() {
         return hp;

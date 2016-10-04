@@ -1,9 +1,11 @@
 package com.yerimen.server;
 
 import com.badlogic.gdx.math.Vector2;
+import com.yerimen.json.PowerJsonBuilder;
 import com.yerimen.players.MainPlayer;
 import com.yerimen.players.Player;
 import com.yerimen.players.PlayerStatus;
+import com.yerimen.powers.Power;
 import com.yerimen.screen.GameContent;
 import com.yerimen.textures.TextureManager;
 import io.socket.client.IO;
@@ -20,10 +22,12 @@ public class Server implements Observer{
 
     private Socket socket;
     private HashMap<String, Player> players;
+    private List<Power> powers;
     private GameContent gameContent;
 
     public Server(GameContent gameContent){
         this.players = new HashMap<>();
+        this.powers = new ArrayList<>();
         this.gameContent = gameContent;
         this.connectSocket();
         this.configSocketEvents();
@@ -44,7 +48,9 @@ public class Server implements Observer{
             .on("newPlayer", this::newPlayer)
             .on("playerDisconnected", this::playerDisconnected)
             .on("getPlayers", this::getPlayersInServer)
-            .on("playerMoved", this::playerMoved);
+            .on("playerMoved", this::playerMoved)
+            .on("playerAttack", this::playerAttack);
+
     }
 
     private void connectionEvent(){
@@ -103,12 +109,28 @@ public class Server implements Observer{
         }
     }
 
+    private void playerAttack(Object[] args){
+        JSONObject data = (JSONObject) args[0];
+        Power power = new PowerJsonBuilder(data).buildObject();
+        this.powers.add(power);
+    }
+
     public List<Player> getPlayers(){
         return new ArrayList<>(this.players.values());
     }
 
+    public List<Power> getPowers(){
+        return new ArrayList<>(this.powers);
+    }
+
     public void update(JSONObject jsonObject){
         socket.emit("playerMoved", jsonObject);
+    }
+
+    public void update(Power power){
+        //power.setId(this.getNextId());
+        this.powers.add(power);
+        socket.emit("playerAttack", power.toJson());
     }
 
 }

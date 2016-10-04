@@ -2,6 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var players = [];
+var powers = [];
 
 server.listen(8080, function(){
 	log("Server is new running...");
@@ -9,11 +10,16 @@ server.listen(8080, function(){
 
 io.on('connection', function(socket){
 	socket.emit('getPlayers', players);
+	socket.emit('getPowers', powers);
 	socket.broadcast.emit("newPlayer", { id: socket.id });
 	socket.on('playerMoved', function(data){
 	    data.id = socket.id;
 	    socket.broadcast.emit('playerMoved', data);
         updatePlayer(data);
+	});
+	socket.on('playerAttack', function(data){
+        socket.broadcast.emit('playerAttack', data);
+        powers.push(data);
 	});
 	socket.on('takeDamage', function(data){
 	    data.id = socket.id;
