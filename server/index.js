@@ -4,7 +4,7 @@ var io = require('socket.io')(server);
 var players = [];
 
 server.listen(8080, function(){
-	log("Server is new running...");
+	log("Server is running...");
 });
 
 io.on('connection', function(socket){
@@ -14,7 +14,6 @@ io.on('connection', function(socket){
 	    data.id = socket.id;
 	    socket.broadcast.emit('playerMoved', data);
         updatePlayer(data);
-        log("player moved x: " +  data.x  + " y: " + data.y)
 	});
 	socket.on('takeDamage', function(data){
 	    data.id = socket.id;
@@ -26,6 +25,7 @@ io.on('connection', function(socket){
 		removePlayer(socket.id);
 	});
 	players.push(new player(socket.id, 0,0, 100, 'right', 'werewolf'));
+	log("player "+ socket.id)
 });
 
 function player(id, x, y, health, direction, name){

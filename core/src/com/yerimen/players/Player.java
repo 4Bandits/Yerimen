@@ -9,42 +9,32 @@ import com.yerimen.server.Observable;
 import com.yerimen.textures.PlayerTexture;
 
 public class Player extends Character implements Observable {
-
-
-    float stateTime;
-    public Player(PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position){
+    public Player(PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
         super(playerTexture, playerStatus, position);
     }
 
-    public void update(float delta, OrthographicCamera camera){
-        isMoving = false;
-        PlayerTexture texture = getPlayerTexture();
-        stateTime+=delta;
-      //  setCurrentFrame(texture.getStandBackAnimation().getKeyFrame(delta,true));
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            this.translate(0,-1);
+    @Override
+    public void update(float delta, OrthographicCamera camera) {
+        stateTime += delta;
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            this.translate(0, -1).setDirection("up");
             this.notify(this.toJson());
-            setCurrentFrame(texture.getWalkBackAnimation().getKeyFrame(stateTime,true));
+            setCurrentFrame(playerTexture.getWalkBackAnimation().getKeyFrame(stateTime, true));
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            this.translate(-1,0);
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            this.translate(-1, 0).setDirection("right");
             this.notify(this.toJson());
-            setCurrentFrame(texture.getWalkRightAnimation().getKeyFrame(stateTime,true));
+            setCurrentFrame(playerTexture.getWalkRightAnimation().getKeyFrame(stateTime, true));
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            this.translate(0,1);
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            this.translate(0, 1).setDirection("down");
             this.notify(this.toJson());
-            setCurrentFrame(texture.getWalkFrontAnimation().getKeyFrame(stateTime,true));
+            setCurrentFrame(playerTexture.getWalkFrontAnimation().getKeyFrame(stateTime, true));
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            this.translate(1,0);
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            this.translate(1, 0).setDirection("left");
             this.notify(this.toJson());
-            setCurrentFrame(texture.getWalkLeftAnimation().getKeyFrame(stateTime,true));
-        }
-        if(isMoving){
-
-        }else{
-
+            setCurrentFrame(playerTexture.getWalkLeftAnimation().getKeyFrame(stateTime, true));
         }
     }
 }
