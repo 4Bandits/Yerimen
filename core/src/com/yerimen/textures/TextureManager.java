@@ -16,9 +16,19 @@ public class TextureManager {
     private CharacterStatus wizardStatus;
     private CharacterStatus werewolfStatus;
     private CharacterStatus vampireStatus;
+    private Texture fireBall;
 
 
-    protected TextureManager(){
+    private TextureManager(){
+        initializePlayerTextures();
+        initializePowers();
+    }
+
+    private void initializePowers() {
+        fireBall = new Texture("images/fireball.png");
+    }
+
+    private void initializePlayerTextures() {
         wizard = new Texture("images/wizard.png");
         wizardTexture = new WizardTexture(wizard, 78);
         wizardStatus = new CharacterStatus();
@@ -72,4 +82,6 @@ public class TextureManager {
     public CharacterStatus getVampireStatus() {
         return vampireStatus;
     }
+
+    public Texture getFireBall() { return fireBall; }
 }

@@ -1,5 +1,6 @@
 package com.yerimen.server;
 
+import com.yerimen.powers.Power;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public interface Observable {
     default void notify(JSONObject jsonObject){
         this.observers.forEach(observer -> observer.update(jsonObject));
     }
+
+    default void notify(Power power){ this.observers.forEach(observer -> observer.update(power)); }
 
 }
 
