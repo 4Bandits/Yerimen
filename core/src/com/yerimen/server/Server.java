@@ -91,11 +91,11 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String playerId = data.getString("id");
-            Double x = data.getDouble("x");
-            Double y = data.getDouble("y");
-            String direction = data.getString("direction");
             Character enemy = enemies.get(playerId);
             if (enemy != null) {
+                Double x = data.getDouble("x");
+                Double y = data.getDouble("y");
+                String direction = data.getString("direction");
                 enemy.move(x.floatValue(), y.floatValue()).setDirection(direction).setMoving(true);
             }
         } catch (JSONException e) {

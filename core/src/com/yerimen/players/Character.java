@@ -32,7 +32,7 @@ public class Character {
     }
 
     public void render(SpriteBatch spriteBatch) {
-        spriteBatch.draw(currentFrame, currentFrame.getRegionWidth(), currentFrame.getRegionHeight());
+        spriteBatch.draw(currentFrame, sprite.getX(), sprite.getY());
     }
 
     public Vector2 getPosition() {
