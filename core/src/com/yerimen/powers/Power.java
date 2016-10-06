@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PowerJsonBuilder;
 import org.json.JSONObject;
 
-public class Power extends Sprite{
+public class Power extends Sprite {
 
     private Float velocity;
     private Float distance;
@@ -15,7 +15,7 @@ public class Power extends Sprite{
     private Vector2 destination;
     private Float time;
 
-    public Power(Texture texture, Float velocity, Float distance, Vector2 destination, Vector2 startPosition){
+    public Power(Texture texture, Float velocity, Float distance, Vector2 destination, Vector2 startPosition) {
         super(texture);
         this.setPosition(startPosition.x, startPosition.y);
         this.velocity = velocity;
@@ -26,7 +26,7 @@ public class Power extends Sprite{
     }
 
     private Vector2 getAcceleration() {
-        return new Vector2((this.destination.x - this.getX()) / this.time, (this.destination.y - this.getY() )/ this.time);
+        return new Vector2((this.destination.x - this.getX()) / this.time, (this.destination.y - this.getY()) / this.time);
     }
 
     private Float getTime(){

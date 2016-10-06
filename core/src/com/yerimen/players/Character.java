@@ -20,13 +20,13 @@ public class Character {
     protected boolean isMoving;
 
     public Character(PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
-        sprite = new Sprite(playerTexture.getTexture());
+        this.sprite = new Sprite(playerTexture.getTexture());
         this.playerTexture = playerTexture;
         this.sprite.setPosition(position.x, position.y);
         this.status = playerStatus;
         this.direction = "left";
-        currentFrame = playerTexture.getStandFrontAnimation().getKeyFrame(0, true);
-        isMoving = false;
+        this.currentFrame = playerTexture.getStandFrontAnimation().getKeyFrame(0, true);
+        this.isMoving = false;
     }
 
     public void render(SpriteBatch spriteBatch) {

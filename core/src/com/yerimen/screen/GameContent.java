@@ -11,7 +11,6 @@ public class GameContent {
     private Server server;
     private Player mainPlayer;
 
-
     public GameContent() {
         this.mainPlayer= new NullPlayer();
         this.initializeServer();
@@ -20,7 +19,8 @@ public class GameContent {
     public void update(float delta, OrthographicCamera camera) {
         mainPlayer.update(delta, camera);
         this.server.getEnemies().forEach(enemy -> enemy.update(delta, camera));
-        this.server.getPowers().forEach(power -> power.update(delta));    }
+        this.server.getPowers().forEach(power -> power.update(delta));
+    }
 
     public void render(SpriteBatch batch) {
         mainPlayer.render(batch);
