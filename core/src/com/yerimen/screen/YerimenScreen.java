@@ -22,8 +22,7 @@ public class YerimenScreen  extends ScreenAdapter {
 
     private void initializeCamera(){
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        //camera.setToOrtho(true, Gdx.graphics.getWidth() / 48f, Gdx.graphics.getHeight() / 48f);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
     }
 
