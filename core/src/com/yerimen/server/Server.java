@@ -40,7 +40,6 @@ public class Server implements Observer {
                 .on("getEnemies", this::getPlayersInServer)
                 .on("playerMoved", this::playerMoved)
                 .on("playerAttack", this::playerAttack);
-
     }
 
     private void connectionEvent() {
