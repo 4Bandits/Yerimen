@@ -36,13 +36,13 @@ public class GameContent {
     public void update(float delta, OrthographicCamera camera) {
         mainPlayer.update(delta, camera);
         this.getEnemies().forEach(enemy -> enemy.update(delta, camera));
-        this.server.getPowers().forEach(power -> power.update(delta));
+        this.getPowers().forEach(power -> power.update(delta));
     }
 
     public void render(SpriteBatch batch) {
         this.level.render(batch);
         this.getEnemies().forEach(player -> player.render(batch));
-        this.server.getPowers().forEach(power -> power.render(batch));
+        this.getPowers().forEach(power -> power.render(batch));
         mainPlayer.render(batch);
     }
 
@@ -80,5 +80,11 @@ public class GameContent {
         return new ArrayList<>(this.enemies.values());
     }
 
+    public void addPower(Power power) {
+        this.powers.add(power);
+    }
 
+    public List<Power> getPowers() {
+        return new ArrayList<>(this.powers);
+    }
 }
