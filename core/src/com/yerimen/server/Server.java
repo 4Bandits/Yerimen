@@ -1,4 +1,5 @@
 package com.yerimen.server;
+
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.players.Character;
 import com.yerimen.json.PowerJsonBuilder;
@@ -20,12 +21,10 @@ import java.util.List;
 public class Server implements Observer {
 
     private Socket socket;
-    private HashMap<String, Character> enemies;
     private List<Power> powers;
     private GameContent gameContent;
 
     public Server(GameContent gameContent) {
-        this.enemies = new HashMap<>();
         this.powers = new ArrayList<>();
         this.gameContent = gameContent;
         this.connectSocket();
@@ -62,7 +61,7 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String newPlayerID = data.getString("id");
-            enemies.put(newPlayerID, new Character(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0, 0)));
+            gameContent.addEnemy(newPlayerID);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -71,10 +70,10 @@ public class Server implements Observer {
     private void playerDisconnected(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String anotherPlayerID = data.getString("id");
-            enemies.remove(anotherPlayerID);
+            String playerID = data.getString("id");
+            gameContent.removeEnemy(playerID);
         } catch (JSONException e) {
-            throw new RuntimeException("SocketIO - Remove old Character Error");
+            throw new RuntimeException("SocketIO - Remove Character Error");
         }
     }
 
@@ -84,8 +83,7 @@ public class Server implements Observer {
             for (int i = 0; i < objects.length(); i++) {
                 float x = ((Double) objects.getJSONObject(i).getDouble("x")).floatValue();
                 float y = ((Double) objects.getJSONObject(i).getDouble("y")).floatValue();
-                Character anotherPlayer = new Character(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(x, y));
-                enemies.put(objects.getJSONObject(i).getString("id"), anotherPlayer);
+                gameContent.addEnemy(objects.getJSONObject(i).getString("id"), new Vector2(x, y));
             }
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Get All Players Error");
@@ -96,13 +94,10 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String playerId = data.getString("id");
-            Character enemy = enemies.get(playerId);
-            if (enemy != null) {
-                Double x = data.getDouble("x");
-                Double y = data.getDouble("y");
-                String direction = data.getString("direction");
-                enemy.move(x.floatValue(), y.floatValue()).setDirection(direction).setMoving(true);
-            }
+            Double x = data.getDouble("x");
+            Double y = data.getDouble("y");
+            String direction = data.getString("direction");
+            gameContent.moveEnemy(playerId, x.floatValue(), y.floatValue(), direction);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
@@ -112,10 +107,6 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         Power power = new PowerJsonBuilder(data).buildObject();
         this.powers.add(power);
-    }
-
-    public List<Character> getEnemies() {
-        return new ArrayList<>(this.enemies.values());
     }
 
     public List<Power> getPowers() {
