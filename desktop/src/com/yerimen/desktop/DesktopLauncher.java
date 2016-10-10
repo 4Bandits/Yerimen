@@ -16,6 +16,7 @@ public class DesktopLauncher {
         config.useGL30 = true;
         config.fullscreen = false;
         config.vSyncEnabled = true;
+        config.title = "Yerimen";
 
         Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
         config.width = (int) screenDimension.getWidth();

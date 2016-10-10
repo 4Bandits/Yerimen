@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.YerimenGame;
+import com.yerimen.user.UserInformation;
 
 public class YerimenScreen  extends ScreenAdapter {
 
@@ -13,7 +14,7 @@ public class YerimenScreen  extends ScreenAdapter {
     private GameContent gameContent;
     private OrthographicCamera camera;
 
-    public YerimenScreen(YerimenGame game) {
+    public YerimenScreen(YerimenGame game, UserInformation userInformation) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.game = game;
         this.gameContent = new GameContent();
