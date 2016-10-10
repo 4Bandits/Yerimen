@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PowerJsonBuilder;
 import com.yerimen.players.Player;
 import com.yerimen.powers.Power;
-import com.yerimen.screen.GameContent;
+import com.yerimen.screens.game.GameContent;
 import com.yerimen.textures.TextureManager;
 import io.socket.client.IO;
 import io.socket.client.Socket;

@@ -1,4 +1,4 @@
-package com.yerimen.screen;
+package com.yerimen.screens.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

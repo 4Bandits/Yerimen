@@ -1,4 +1,4 @@
-package com.yerimen.screen;
+package com.yerimen.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
