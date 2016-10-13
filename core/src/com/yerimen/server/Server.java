@@ -6,6 +6,7 @@ import com.yerimen.players.Player;
 import com.yerimen.powers.Power;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.textures.TextureManager;
+import com.yerimen.user.UserInformation;
 import io.socket.client.IO;
 import io.socket.client.Socket;
 import org.json.JSONArray;
@@ -14,10 +15,12 @@ import org.json.JSONObject;
 
 public class Server implements Observer {
 
+    private UserInformation userInformation;
     private Socket socket;
     private GameContent gameContent;
 
-    public Server(GameContent gameContent) {
+    public Server(UserInformation userInformation, GameContent gameContent) {
+        this.userInformation = userInformation;
         this.gameContent = gameContent;
         this.connectSocket();
         this.configSocketEvents();
@@ -27,6 +30,7 @@ public class Server implements Observer {
         try {
             socket = IO.socket("http://localhost:8080");
             socket.connect();
+            this.connectionEvent();
         } catch (Exception e) {
             throw new RuntimeException("Connection Error!!!");
         }
@@ -43,7 +47,7 @@ public class Server implements Observer {
     }
 
     private void connectionEvent() {
-        Player mainPlayer = new Player(TextureManager.getInstance().getWerewolfTexture(), TextureManager.getInstance().getWerewolfStatus(), new Vector2(0, 0));
+        Player mainPlayer = new Player(userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0));
         this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
     }

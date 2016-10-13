@@ -17,7 +17,7 @@ public class YerimenScreen  extends ScreenAdapter {
     public YerimenScreen(YerimenGame game, UserInformation userInformation) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.game = game;
-        this.gameContent = new GameContent();
+        this.gameContent = new GameContent(userInformation);
         this.initializeCamera();
     }
 

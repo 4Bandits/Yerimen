@@ -11,6 +11,7 @@ import com.yerimen.players.NullPlayer;
 import com.yerimen.powers.Power;
 import com.yerimen.server.Server;
 import com.yerimen.textures.TextureManager;
+import com.yerimen.user.UserInformation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,14 +24,15 @@ public class GameContent {
     private Level level;
     private HashMap<String, Character> enemies;
     private List<Power> powers;
+    private UserInformation userInformation;
 
 
-    public GameContent() {
-        this.mainPlayer = new NullPlayer();
-        this.initializeServer();
+    public GameContent(UserInformation userInformation) {
+        this.userInformation = userInformation;
         this.level = new Level(TextureManager.getInstance().getGrass());
         this.enemies = new HashMap<>();
         this.powers = new ArrayList<>();
+        this.initializeServer();
     }
 
     public void update(float delta, OrthographicCamera camera) {
@@ -47,7 +49,7 @@ public class GameContent {
     }
 
     private void initializeServer() {
-        this.server = new Server(this);
+        this.server = new Server(userInformation, this);
     }
 
     public void setMainPlayer(Player mainPlayer) {
