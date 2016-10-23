@@ -8,13 +8,19 @@ import java.awt.*;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
-        config.width = (int) screenDimension.getWidth();
-        config.height = (int) screenDimension.getHeight();
+		new LwjglApplication(new YerimenGame(), gameConfiguration());
+	}
+
+	private static LwjglApplicationConfiguration gameConfiguration() {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.useGL30 = true;
         config.fullscreen = false;
         config.vSyncEnabled = true;
-		new LwjglApplication(new YerimenGame(), config);
-	}
+        config.title = "Yerimen";
+
+        Dimension screenDimension = Toolkit.getDefaultToolkit().getScreenSize();
+        config.width = (int) screenDimension.getWidth();
+        config.height = (int) screenDimension.getHeight();
+        return config;
+    }
 }

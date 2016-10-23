@@ -3,7 +3,8 @@ package com.yerimen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix4;
-import com.yerimen.screen.YerimenScreen;
+import com.yerimen.screens.game.YerimenScreen;
+import com.yerimen.screens.mainMenu.MainMenuScreen;
 import com.yerimen.textures.TextureManager;
 
 public class YerimenGame extends Game {
@@ -14,7 +15,7 @@ public class YerimenGame extends Game {
 	public void create () {
         TextureManager.getInstance();
 		batch = new SpriteBatch();
-		setScreen(new YerimenScreen(this));
+		setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
