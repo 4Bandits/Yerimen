@@ -8,16 +8,18 @@ import com.badlogic.gdx.math.Vector2;
 import com.yerimen.YerimenGame;
 import com.yerimen.user.UserInformation;
 
-public class YerimenScreen  extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter {
 
     private YerimenGame game;
     private GameContent gameContent;
     private OrthographicCamera camera;
 
-    public YerimenScreen(YerimenGame game, UserInformation userInformation) {
+    public GameScreen(YerimenGame game) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.game = game;
-        this.gameContent = new GameContent(userInformation);
+        this.gameContent = new GameContent();
+        this.game.connect(this.gameContent);
+
         this.initializeCamera();
     }
 
@@ -31,6 +33,7 @@ public class YerimenScreen  extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         this.updateCamera();
         this.game.setProjectionMatrix(camera.combined);
         this.update(delta);
@@ -43,9 +46,9 @@ public class YerimenScreen  extends ScreenAdapter {
     }
 
     private void draw() {
-        this.game.batch.begin();
+        this.game.getBatch().begin();
         this.gameContent.render(this.game.getBatch());
-        this.game.batch.end();
+        this.game.getBatch().end();
     }
 
     private void updateCamera(){

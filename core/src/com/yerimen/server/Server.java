@@ -19,31 +19,29 @@ public class Server implements Observer {
     private Socket socket;
     private GameContent gameContent;
 
-    public Server(UserInformation userInformation, GameContent gameContent) {
-        this.userInformation = userInformation;
-        this.gameContent = gameContent;
-        this.connectSocket();
-        this.configSocketEvents();
+    public void attemptConnectionTo(String serverUrl, UserInformation userInformation) {
+        try {
+            this.socket = IO.socket(serverUrl);
+            this.socket.connect();
+            this.userInformation = userInformation;
+        } catch (Exception e) {
+            throw new RuntimeException("Connection Error!");
+        }
     }
 
-    private void connectSocket() {
-        try {
-            socket = IO.socket("http://localhost:8080");
-            socket.connect();
-            this.connectionEvent();
-        } catch (Exception e) {
-            throw new RuntimeException("Connection Error!!!");
-        }
+    public void connect(GameContent gameContent) {
+        this.gameContent = gameContent;
+        this.configSocketEvents();
+        this.connectionEvent();
     }
 
     private void configSocketEvents() {
         socket
-                .on(Socket.EVENT_CONNECT, args -> this.connectionEvent())
-                .on("newPlayer", this::newPlayer)
-                .on("playerDisconnected", this::playerDisconnected)
-                .on("getEnemies", this::getPlayersInServer)
-                .on("playerMoved", this::playerMoved)
-                .on("playerAttack", this::playerAttack);
+            .on("newPlayer", this::newPlayer)
+            .on("playerDisconnected", this::playerDisconnected)
+            .on("getEnemies", this::getPlayersInServer)
+            .on("playerMoved", this::playerMoved)
+            .on("playerAttack", this::playerAttack);
     }
 
     private void connectionEvent() {
