@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yerimen.players.Player;
 import com.yerimen.players.NullPlayer;
 import com.yerimen.server.Server;
+import com.yerimen.textures.TextureManager;
 
 public class GameContent {
 
@@ -23,6 +24,7 @@ public class GameContent {
         this.server.getPowers().forEach(power -> power.update(delta));    }
 
     public void render(SpriteBatch batch) {
+
         mainPlayer.render(batch);
         this.server.getEnemies().forEach(player -> player.render(batch));
         this.server.getPowers().forEach(power -> power.render(batch));

@@ -1,6 +1,10 @@
 package com.yerimen.textures;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.yerimen.players.CharacterStatus;
 
 public class TextureManager {
@@ -17,11 +21,17 @@ public class TextureManager {
     private CharacterStatus werewolfStatus;
     private CharacterStatus vampireStatus;
     private Texture fireBall;
-
+    private TiledMap map;
+    private TiledMapRenderer mapRenderer;
 
     private TextureManager(){
         initializePlayerTextures();
         initializePowers();
+        initializeMapAndMapRenderer();
+    }
+    private  void initializeMapAndMapRenderer(){
+        map = new TmxMapLoader().load("maps/level01.tmx");
+        mapRenderer = new OrthogonalTiledMapRenderer(map);
     }
 
     private void initializePowers() {
@@ -47,6 +57,13 @@ public class TextureManager {
         return instance;
     }
 
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public TiledMapRenderer getMapRenderer() {
+        return mapRenderer;
+    }
     public Texture getWizard() {
         return wizard;
     }

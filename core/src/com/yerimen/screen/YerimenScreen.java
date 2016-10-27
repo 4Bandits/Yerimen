@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.YerimenGame;
+import com.yerimen.textures.TextureManager;
 
 public class YerimenScreen  extends ScreenAdapter {
 
@@ -33,6 +35,9 @@ public class YerimenScreen  extends ScreenAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         this.updateCamera();
         this.game.setProjectionMatrix(camera.combined);
+        TiledMapRenderer mapRenderer =TextureManager.getInstance().getMapRenderer();
+        mapRenderer.setView(camera);
+        mapRenderer.render();
         this.update(delta);
         this.draw();
     }
