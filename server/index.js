@@ -1,41 +1,48 @@
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+
 var players = [];
 var powers = [];
 
-server.listen(8080, function(){
-	log("Server is running...");
+server.listen(9000, function(){
+	log("Yerimen Server started.");
 });
 
 io.on('connection', function(socket){
 	socket.emit('getEnemies', players);
 	socket.emit('getPowers', powers);
+
 	socket.broadcast.emit("newPlayer", { id: socket.id });
+
 	socket.on('playerMoved', function(data){
 	    data.id = socket.id;
 	    socket.broadcast.emit('playerMoved', data);
         updatePlayer(data);
-       // log("player moved x: " +  data.x  + " y: " + data.y)
 	});
+
 	socket.on('playerAttack', function(data){
         socket.broadcast.emit('playerAttack', data);
         powers.push(data);
 	});
+
 	socket.on('takeDamage', function(data){
 	    data.id = socket.id;
         socket.broadcast.emit('takeDamage', data);
         updatePlayer(data);
 	});
+
 	socket.on('disconnect', function(){
 		socket.broadcast.emit('playerDisconnected', { id: socket.id });
+		log("Player with ID [" + socket.id + "] just logged out.");
 		removePlayer(socket.id);
 	});
-	players.push(new player(socket.id, 0,0, 100, 'right', 'werewolf'));
-	log("player "+ socket.id)
+
+
+	loginNewPlayer(socket);
 });
 
-function player(id, x, y, health, direction, name){
+function Player(id, x, y, health, direction, name){
     this.id = id;
     this.x = x;
     this.y = y;
@@ -45,24 +52,51 @@ function player(id, x, y, health, direction, name){
 };
 
 function log(comment){
-    console.log(comment);
+    console.log("[INFO | " + currentTimestamp() +"] " + comment);
 };
 
+function currentTimestamp() {
+    var date = new Date();
+    var hour = leadingZero(date.getHours());
+    var minutes = leadingZero(date.getMinutes());
+    var seconds = leadingZero(date.getSeconds());
+    return hour + ":" + minutes + ":" + seconds;
+}
+
+function leadingZero(string) {
+    return ("0" + string).slice(-2);
+};
+
+function loginNewPlayer(socket) {
+    players.push(new Player(socket.id, 0,0, 100, 'right', 'werewolf'));
+    log("Player with ID [" + socket.id + "] just logged in.");
+}
+
 function updatePlayer(data){
-    for(var i = 0; i < players.length; i++){
-        if(players[i].id == data.id){
-            players[i].x = data.x;
-            players[i].y = data.y;
-            players[i].health = data.health;
-            players[i].direction = data.direction;
-        };
-    };
+    forPlayer(data.id, function(player, index) {
+       player.x = data.x;
+       player.y = data.y;
+       player.health = data.health;
+       player.direction = data.direction;
+    });
 };
 
 function removePlayer(playerID){
-    for(var i = 0; i < players.length; i++){
-        if(players[i].id == playerID){
-            players.splice(i, 1);
-        };
-    };
+    forPlayer(playerID, function(player, index) {
+        players.splice(index, 1);
+    });
 };
+
+function forPlayer(id, callback) {
+    forEach(players, function(player, index) {
+        if(player.id == id){
+           callback(player, index);
+        };
+    });
+}
+
+function forEach(list, callback) {
+    for(var i = 0; i < list.length; i++){
+        callback(list[i], i);
+    };
+}
