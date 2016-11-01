@@ -1,9 +1,12 @@
 package com.yerimen.screens.game;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.level.Level;
+import com.yerimen.level.MiniMap;
 import com.yerimen.players.Character;
 import com.yerimen.players.CharacterStatus;
 import com.yerimen.players.Player;
@@ -20,12 +23,13 @@ public class GameContent {
     private Level level;
     private HashMap<String, Character> enemies;
     private List<Power> powers;
-
+    private MiniMap miniMap;
 
     public GameContent() {
         this.level = new Level(TextureManager.getInstance().getGrass());
         this.enemies = new HashMap<>();
         this.powers = new ArrayList<>();
+        this.miniMap = new MiniMap();
     }
 
     public void update(float delta, OrthographicCamera camera) {
@@ -34,11 +38,13 @@ public class GameContent {
         this.getPowers().forEach(power -> power.update(delta));
     }
 
-    public void render(SpriteBatch batch) {
+    public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         this.level.render(batch);
-        this.getEnemies().forEach(player -> player.render(batch));
+
+        this.getEnemies().forEach(player -> player.render(batch, shapeRenderer, Color.GOLD));
         this.getPowers().forEach(power -> power.render(batch));
-        mainPlayer.render(batch);
+        mainPlayer.render(batch, shapeRenderer, Color.BLUE);
+        this.miniMap.render(batch,shapeRenderer);
     }
 
     public void setMainPlayer(Player mainPlayer) {

@@ -47,7 +47,7 @@ public class GameScreen extends ScreenAdapter {
 
     private void draw() {
         this.game.getBatch().begin();
-        this.gameContent.render(this.game.getBatch());
+        this.gameContent.render(this.game.getBatch(),this.game.getShapeRenderer());
         this.game.getBatch().end();
     }
 
