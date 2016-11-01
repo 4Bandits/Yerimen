@@ -41,7 +41,7 @@ public class GameContent {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
         this.level.render(batch);
 
-        this.getEnemies().forEach(player -> player.render(batch, shapeRenderer, Color.GOLD));
+        this.getEnemies().forEach(player -> player.render(batch, shapeRenderer, Color.RED));
         this.getPowers().forEach(power -> power.render(batch));
         mainPlayer.render(batch, shapeRenderer, Color.BLUE);
         this.miniMap.render(batch,shapeRenderer);

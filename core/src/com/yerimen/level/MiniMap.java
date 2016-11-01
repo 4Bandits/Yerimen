@@ -12,7 +12,7 @@ public class MiniMap {
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer){
         batch.end();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.setColor(Color.CHARTREUSE);
         shapeRenderer.rect(10, 10,130, 130);
         shapeRenderer.end();
         batch.begin();

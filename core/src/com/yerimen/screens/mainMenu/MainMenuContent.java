@@ -86,7 +86,7 @@ public class MainMenuContent {
     }
 
     private void initializeServerUrlInput(Skin skin) {
-        this.serverUrlInput = new TextField("http://localhost/9000", skin);
+        this.serverUrlInput = new TextField("http://localhost:9000", skin);
         this.serverUrlInput.addListener(inputListener());
     }
 
