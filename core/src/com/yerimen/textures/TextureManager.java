@@ -31,7 +31,7 @@ public class TextureManager {
     }
     private  void initializeMapAndMapRenderer(){
         map = new TmxMapLoader().load("maps/level01.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map);
+        mapRenderer = new OrthogonalTiledMapRenderer(map,1/2f);
     }
 
     private void initializePowers() {
