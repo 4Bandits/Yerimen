@@ -1,9 +1,11 @@
 package com.yerimen.players;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PlayerJsonBuilder;
 import com.yerimen.textures.PlayerTexture;
@@ -29,8 +31,24 @@ public class Character {
         isMoving = false;
     }
 
-    public void render(SpriteBatch spriteBatch) {
+    public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Color color) {
         spriteBatch.draw(currentFrame, sprite.getX(), sprite.getY());
+        renderOnMiniMap(spriteBatch, shapeRenderer, color);
+
+    }
+
+    private void renderOnMiniMap(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Color color) {
+        spriteBatch.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(color);
+        Vector2 v2 = this.getPosition();
+        float x = 10 + (v2.x / 25);
+        float y = 10 + (v2.y / 25);
+        shapeRenderer.rect(x, y, 5, 5);
+        shapeRenderer.end();
+
+        spriteBatch.begin();
     }
 
     public Vector2 getPosition() {
