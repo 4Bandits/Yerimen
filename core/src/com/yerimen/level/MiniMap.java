@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-/**
- * Created by nacho on 11/1/2016.
- */
 public class MiniMap {
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer){

@@ -63,11 +63,11 @@ public class Player extends Character implements Observable {
         this.notify(power);
     }
 
-    private String getAttackID(){
+    private String getAttackID() {
         return this.getCharacterID() + this.getNextInt();
     }
 
-    private String getNextInt(){
+    private String getNextInt() {
         String ret = this.nextInt.toString();
         this.nextInt++;
         return ret;
@@ -81,5 +81,9 @@ public class Player extends Character implements Observable {
         Vector3 vector3 = new Vector3();
         vector3.set(x, y, 0);
         return camera.unproject(vector3);
+    }
+
+    public void setPosition(float x, float y) {
+        this.sprite.setPosition(x, y);
     }
 }

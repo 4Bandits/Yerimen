@@ -37,7 +37,7 @@ public class Server implements Observer {
 
     private void configSocketEvents() {
         socket
-            .on("getSocketID", this::getSocketID)
+            .on("getStartedInfo", this::getStartedInfo)
             .on("newPlayer", this::newPlayer)
             .on("playerDisconnected", this::playerDisconnected)
             .on("getEnemies", this::getPlayersInServer)
@@ -103,10 +103,15 @@ public class Server implements Observer {
         gameContent.addPower(power);
     }
 
-    private void getSocketID(Object[] args){
+
+    private void getStartedInfo(Object[] args){
         JSONObject data = (JSONObject) args[0];
         try {
             this.gameContent.getMainPlayer().setCharacterID(data.getString("socketID"));
+
+            Double x = data.getDouble("positionX");
+            Double y = data.getDouble("positionY");
+            this.gameContent.getMainPlayer().setPosition(x.floatValue(), y.floatValue());
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }

@@ -18,7 +18,7 @@ public class Character {
     private CharacterStatus status;
     protected PlayerTexture playerTexture;
     private String direction;
-    private Sprite sprite;
+    protected Sprite sprite;
     private TextureRegion currentFrame;
     protected float stateTime;
     protected boolean isMoving;
