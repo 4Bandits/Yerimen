@@ -11,8 +11,12 @@ import com.yerimen.server.Observable;
 import com.yerimen.textures.PlayerTexture;
 
 public class Player extends Character implements Observable {
-    public Player(PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
-        super(playerTexture, playerStatus, position);
+
+    private Integer nextInt;
+
+    public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
+        super(characterID, playerTexture, playerStatus, position);
+        nextInt = 0;
     }
 
     @Override
@@ -55,8 +59,18 @@ public class Player extends Character implements Observable {
     private void attack(Vector3 vector3) {
         Vector2 vector2 = new Vector2(vector3.x, vector3.y);
         Float distance = this.getPosition().dst(vector2);
-        Power power = new FireBall(distance, vector2, this.getPosition());
+        Power power = new FireBall(this.getCharacterID(), this.getAttackID(), distance, vector2, this.getPosition());
         this.notify(power);
+    }
+
+    private String getAttackID(){
+        return this.getCharacterID() + this.getNextInt();
+    }
+
+    private String getNextInt(){
+        String ret = this.nextInt.toString();
+        this.nextInt++;
+        return ret;
     }
 
     private boolean isTakenDamage() {

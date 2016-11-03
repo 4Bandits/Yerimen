@@ -9,7 +9,7 @@ import com.yerimen.textures.TextureManager;
 public class NullPlayer extends Player {
 
     public NullPlayer() {
-        super(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0, 0));
+        super("", TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0, 0));
     }
 
     public void update(float deltaTime, OrthographicCamera camera) {

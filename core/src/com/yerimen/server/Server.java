@@ -5,7 +5,6 @@ import com.yerimen.json.PowerJsonBuilder;
 import com.yerimen.players.Player;
 import com.yerimen.powers.Power;
 import com.yerimen.screens.game.GameContent;
-import com.yerimen.textures.TextureManager;
 import com.yerimen.user.UserInformation;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -22,6 +21,7 @@ public class Server implements Observer {
     public void attemptConnectionTo(String serverUrl, UserInformation userInformation) {
         try {
             this.socket = IO.socket(serverUrl);
+            this.configSocketEvents();
             this.socket.connect();
             this.userInformation = userInformation;
         } catch (Exception e) {
@@ -31,12 +31,13 @@ public class Server implements Observer {
 
     public void connect(GameContent gameContent) {
         this.gameContent = gameContent;
-        this.configSocketEvents();
+        gameContent.setServer(this);
         this.connectionEvent();
     }
 
     private void configSocketEvents() {
         socket
+            .on("getSocketID", this::getSocketID)
             .on("newPlayer", this::newPlayer)
             .on("playerDisconnected", this::playerDisconnected)
             .on("getEnemies", this::getPlayersInServer)
@@ -45,7 +46,7 @@ public class Server implements Observer {
     }
 
     private void connectionEvent() {
-        Player mainPlayer = new Player(userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0));
+        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0));
         this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
     }
@@ -53,8 +54,8 @@ public class Server implements Observer {
     private void newPlayer(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String newPlayerID = data.getString("id");
-            gameContent.addEnemy(newPlayerID);
+            String newCharacterID = data.getString("characterID");
+            gameContent.addEnemy(newCharacterID);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -63,8 +64,8 @@ public class Server implements Observer {
     private void playerDisconnected(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String playerID = data.getString("id");
-            gameContent.removeEnemy(playerID);
+            String characterID = data.getString("characterID");
+            gameContent.removeEnemy(characterID);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Remove Character Error");
         }
@@ -76,7 +77,7 @@ public class Server implements Observer {
             for (int i = 0; i < objects.length(); i++) {
                 float x = ((Double) objects.getJSONObject(i).getDouble("x")).floatValue();
                 float y = ((Double) objects.getJSONObject(i).getDouble("y")).floatValue();
-                gameContent.addEnemy(objects.getJSONObject(i).getString("id"), new Vector2(x, y));
+                gameContent.addEnemy(objects.getJSONObject(i).getString("characterID"), new Vector2(x, y));
             }
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Get All Players Error");
@@ -86,11 +87,11 @@ public class Server implements Observer {
     private void playerMoved(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String playerId = data.getString("id");
+            String characterID = data.getString("characterID");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
             String direction = data.getString("direction");
-            gameContent.moveEnemy(playerId, x.floatValue(), y.floatValue(), direction);
+            gameContent.moveEnemy(characterID, x.floatValue(), y.floatValue(), direction);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
@@ -102,14 +103,26 @@ public class Server implements Observer {
         gameContent.addPower(power);
     }
 
+    private void getSocketID(Object[] args){
+        JSONObject data = (JSONObject) args[0];
+        try {
+            this.gameContent.getMainPlayer().setCharacterID(data.getString("socketID"));
+        } catch (JSONException e) {
+            throw new RuntimeException("SocketIO - Move Character Error");
+        }
+    }
+
     public void update(JSONObject jsonObject) {
         socket.emit("playerMoved", jsonObject);
     }
 
     public void update(Power power) {
-        //power.setId(this.getNextId());
         gameContent.addPower(power);
         socket.emit("playerAttack", power.toJson());
+    }
+
+    public void destroyPower(Power power){
+        socket.emit("destroyPower", power.toJson());
     }
 
 }

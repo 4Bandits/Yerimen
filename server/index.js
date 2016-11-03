@@ -10,13 +10,13 @@ server.listen(9000, function(){
 });
 
 io.on('connection', function(socket){
+    socket.emit('getSocketID', {socketID: socket.id})
 	socket.emit('getEnemies', players);
 	socket.emit('getPowers', powers);
 
-	socket.broadcast.emit("newPlayer", { id: socket.id });
+	socket.broadcast.emit("newPlayer", { characterID: socket.id });
 
 	socket.on('playerMoved', function(data){
-	    data.id = socket.id;
 	    socket.broadcast.emit('playerMoved', data);
         updatePlayer(data);
 	});
@@ -27,13 +27,12 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('takeDamage', function(data){
-	    data.id = socket.id;
         socket.broadcast.emit('takeDamage', data);
         updatePlayer(data);
 	});
 
 	socket.on('disconnect', function(){
-		socket.broadcast.emit('playerDisconnected', { id: socket.id });
+		socket.broadcast.emit('playerDisconnected', { characterID: socket.id });
 		log("Player with ID [" + socket.id + "] just logged out.");
 		removePlayer(socket.id);
 	});
@@ -42,8 +41,8 @@ io.on('connection', function(socket){
 	loginNewPlayer(socket);
 });
 
-function Player(id, x, y, health, direction, name){
-    this.id = id;
+function Player(characterID, x, y, health, direction, name){
+    this.characterID = characterID;
     this.x = x;
     this.y = y;
     this.health = health;
@@ -73,7 +72,7 @@ function loginNewPlayer(socket) {
 }
 
 function updatePlayer(data){
-    forPlayer(data.id, function(player, index) {
+    forPlayer(data.characterID, function(player, index) {
        player.x = data.x;
        player.y = data.y;
        player.health = data.health;
@@ -82,14 +81,14 @@ function updatePlayer(data){
 };
 
 function removePlayer(playerID){
-    forPlayer(playerID, function(player, index) {
+    forPlayer(playerID, function(player, index){
         players.splice(index, 1);
     });
 };
 
 function forPlayer(id, callback) {
     forEach(players, function(player, index) {
-        if(player.id == id){
+        if(player.characterID == id){
            callback(player, index);
         };
     });
