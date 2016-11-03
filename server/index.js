@@ -57,15 +57,8 @@ function log(comment){
 
 function currentTimestamp() {
     var date = new Date();
-    var hour = leadingZero(date.getHours());
-    var minutes = leadingZero(date.getMinutes());
-    var seconds = leadingZero(date.getSeconds());
-    return hour + ":" + minutes + ":" + seconds;
+    return date.toLocaleTimeString()
 }
-
-function leadingZero(string) {
-    return ("0" + string).slice(-2);
-};
 
 function addNewPlayer(socket, x, y) {
     players.push(new Player(socket.id, x,y, 100, 'right', 'werewolf'));
