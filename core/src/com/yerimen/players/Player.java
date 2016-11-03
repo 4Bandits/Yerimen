@@ -3,6 +3,9 @@ package com.yerimen.players;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.yerimen.powers.FireBall;
@@ -13,10 +16,12 @@ import com.yerimen.textures.PlayerTexture;
 public class Player extends Character implements Observable {
 
     private Integer nextInt;
+    private int currentSpeed;
 
     public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
         super(characterID, playerTexture, playerStatus, position);
-        nextInt = 0;
+        this.nextInt = 0;
+        this.currentSpeed = 1;
     }
 
     @Override
@@ -34,25 +39,22 @@ public class Player extends Character implements Observable {
     }
 
     private void processMove() {
+        this.currentSpeed = 1;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            this.currentSpeed = 4;
+        }
         if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            this.translate(0, 1).setDirection("up");
-            this.notify(this.toJson());
-            setCurrentFrame(playerTexture.getWalkBackAnimation().getKeyFrame(stateTime, true));
+            this.translate(0, currentSpeed, "up", playerTexture.getWalkBackAnimation());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            this.translate(1, 0).setDirection("right");
-            this.notify(this.toJson());
-            setCurrentFrame(playerTexture.getWalkRightAnimation().getKeyFrame(stateTime, true));
+            this.translate(currentSpeed, 0, "right", playerTexture.getWalkRightAnimation());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            this.translate(0, -1).setDirection("down");
-            this.notify(this.toJson());
-            setCurrentFrame(playerTexture.getWalkFrontAnimation().getKeyFrame(stateTime, true));
+            this.translate(0, -currentSpeed, "down", playerTexture.getWalkFrontAnimation());
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            this.translate(-1, 0).setDirection("left");
-            this.notify(this.toJson());
-            setCurrentFrame(playerTexture.getWalkLeftAnimation().getKeyFrame(stateTime, true));
+            this.translate(-currentSpeed, 0, "left", playerTexture.getWalkLeftAnimation());
         }
     }
 
@@ -85,5 +87,11 @@ public class Player extends Character implements Observable {
 
     public void setPosition(float x, float y) {
         this.sprite.setPosition(x, y);
+    }
+
+    private void translate(int x, int y, String direction, Animation animation) {
+        this.translate(x, y).setDirection(direction);
+        this.notify(this.toJson());
+        setCurrentFrame(animation.getKeyFrame(stateTime, true));
     }
 }
