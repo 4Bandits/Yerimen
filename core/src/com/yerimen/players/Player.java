@@ -16,6 +16,8 @@ import com.yerimen.textures.PlayerTexture;
 public class Player extends Character implements Observable {
 
     private Integer nextInt;
+    private double cooldown = 0.5;
+    private double timer;
     private int currentSpeed;
 
     public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
@@ -28,13 +30,21 @@ public class Player extends Character implements Observable {
     public void update(float delta, OrthographicCamera camera) {
         stateTime += delta;
         processMove();
+        processAttack(delta, camera);
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            Vector3 mousePosition = this.getMousePosition(camera, Gdx.input.getX(), Gdx.input.getY());
-            this.attack(mousePosition);
-        }
         if (this.isTakenDamage()) {
 
+        }
+    }
+
+    private void processAttack(float delta, OrthographicCamera camera) {
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && timer >= cooldown) {
+            Vector3 mousePosition = this.getMousePosition(camera, Gdx.input.getX(), Gdx.input.getY());
+            this.attack(mousePosition);
+            timer = 0;
+            cooldown = 0.5f;
+        } else {
+            timer += delta;
         }
     }
 
