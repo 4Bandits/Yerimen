@@ -49,4 +49,9 @@ public class CharacterStatus {
     public Integer getMagicResistance() {
         return magicResistance;
     }
+
+    public int subtractHp(int value) {
+        return hp-= value;
+    }
+
 }

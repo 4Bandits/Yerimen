@@ -21,8 +21,9 @@ public class Power extends Sprite{
     private Float time;
     private String characterID;
     private String attackID;
+    private int damage;
 
-    public Power(String characterID, String attackID, Texture texture, Float velocity, Float distance, Vector2 destination, Vector2 startPosition){
+    public Power(String characterID, String attackID, Texture texture, Float velocity, Float distance, Vector2 destination, Vector2 startPosition, int damage){
         super(texture);
         this.characterID = characterID;
         this.attackID = attackID;
@@ -32,6 +33,7 @@ public class Power extends Sprite{
         this.destination = destination;
         this.time = this.getTime();
         this.acceleration = getAcceleration();
+        this.damage = damage;
     }
 
     private Vector2 getAcceleration() {
@@ -80,7 +82,7 @@ public class Power extends Sprite{
         for(Character player : players){
             if(this.isInCollisionWith(player)){
                 this.notifyCollision(gameContent);
-                player.isAttacked();
+                player.isAttacked(this.damage);
             }
         }
     }

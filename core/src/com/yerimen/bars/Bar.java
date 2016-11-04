@@ -11,9 +11,9 @@ public class Bar {
     private NinePatch container;
     private int totalWidth;
     private int totalHeight;
-    protected float percentage;
-    protected float positionX;
-    protected float positionY;
+    private float percentage;
+    private float positionX;
+    private float positionY;
 
     public Bar(Texture content, Texture barContainer, float x, float y, int height, int width) {
         bar = new NinePatch(content, 0, 0, 0, 0);
@@ -27,7 +27,7 @@ public class Bar {
 
     public void update(int width, float x, float y) {
         percentage = width / 100f;
-        positionX = x;
+        positionX = x + 5;
         positionY = y;
     }
 

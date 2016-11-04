@@ -141,7 +141,8 @@ public class Character {
         return new Rectangle(getXPosition() + 22, getYPosition(), 30, 65);
     }
 
-    public void isAttacked() {
+    public void isAttacked(int damage) {
+        getStatus().subtractHp(damage);
         // Restar vida - quizas pasar el poder para saber cuanta vida sacar
     }
 
