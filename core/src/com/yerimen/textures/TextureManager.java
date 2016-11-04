@@ -17,6 +17,7 @@ public class TextureManager {
     private CharacterStatus werewolfStatus;
     private CharacterStatus vampireStatus;
     private Texture fireBall;
+    private Texture grass;
 
 
     private TextureManager(){
@@ -38,6 +39,7 @@ public class TextureManager {
         vampire = new Texture("images/vamp.png");
         vampireTexture = new VampireTexture(vampire, 48);
         vampireStatus = new CharacterStatus();
+        grass = new Texture("images/grass.jpg");
     }
 
     public static TextureManager getInstance() {
@@ -84,4 +86,8 @@ public class TextureManager {
     }
 
     public Texture getFireBall() { return fireBall; }
+
+    public Texture getGrass() {
+        return grass;
+    }
 }

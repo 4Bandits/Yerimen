@@ -8,7 +8,8 @@ import org.json.JSONObject;
 
 public class PowerJsonBuilder {
 
-    private String id;
+    private String characterID;
+    private String attackID;
     private Float x;
     private Float y;
     private String name;
@@ -18,7 +19,8 @@ public class PowerJsonBuilder {
     private Float destinationY;
 
     public PowerJsonBuilder(Power power){
-        this.id = "";//power.getId();
+        this.characterID = power.getCharacterID();
+        this.attackID = power.getAttackID();
         this.x = power.getX();
         this.y = power.getY();
         this.name = "images/fireBall.png";
@@ -31,7 +33,8 @@ public class PowerJsonBuilder {
     public JSONObject build(){
         JSONObject data = new JSONObject();
         try {
-            data.put("id", id);
+            data.put("characterID", characterID);
+            data.put("attackID", attackID);
             data.put("x", x);
             data.put("y", y);
             data.put("name", name);
@@ -47,7 +50,8 @@ public class PowerJsonBuilder {
 
     public PowerJsonBuilder(JSONObject jsonObject){
         try {
-            id = jsonObject.getString("id");
+            characterID = jsonObject.getString("characterID");
+            attackID = jsonObject.getString("attackID");
             x = new Float(jsonObject.getDouble("x"));
             y = new Float(jsonObject.getDouble("y"));
             name = jsonObject.getString("name");
@@ -61,6 +65,6 @@ public class PowerJsonBuilder {
     }
 
     public Power buildObject(){
-        return new FireBall(this.distance, new Vector2(destinationX, destinationY), new Vector2(x,y));
+        return new FireBall(this.characterID, this.attackID, this.distance, new Vector2(destinationX, destinationY), new Vector2(x,y));
     }
 }

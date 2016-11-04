@@ -1,4 +1,4 @@
-package com.yerimen.screen;
+package com.yerimen.screens.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -7,23 +7,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.YerimenGame;
 
-public class YerimenScreen  extends ScreenAdapter {
+public class GameScreen extends ScreenAdapter {
 
     private YerimenGame game;
     private GameContent gameContent;
     private OrthographicCamera camera;
 
-    public YerimenScreen(YerimenGame game) {
+    public GameScreen(YerimenGame game) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.game = game;
         this.gameContent = new GameContent();
+        this.game.connect(this.gameContent);
+
         this.initializeCamera();
     }
 
-    private void initializeCamera(){
+    private void initializeCamera() {
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2);
-        //camera.setToOrtho(true, Gdx.graphics.getWidth() / 48f, Gdx.graphics.getHeight() / 48f);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         camera.update();
     }
 
@@ -31,6 +32,7 @@ public class YerimenScreen  extends ScreenAdapter {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         this.updateCamera();
         this.game.setProjectionMatrix(camera.combined);
         this.update(delta);
@@ -43,14 +45,16 @@ public class YerimenScreen  extends ScreenAdapter {
     }
 
     private void draw() {
-        this.game.batch.begin();
-        this.gameContent.render(this.game.getBatch());
-        this.game.batch.end();
+        this.game.getBatch().begin();
+        this.gameContent.render(this.game.getBatch(), this.game.getShapeRenderer());
+        this.game.getBatch().end();
     }
 
-    private void updateCamera(){
+    private void updateCamera() {
         Vector2 vector2 = this.gameContent.getMainPlayer().getPosition();
-        camera.position.set(vector2.x, vector2.y, 0);
+        float x = Math.min(Math.max(vector2.x, 960), 2240);
+        float y = Math.min(Math.max(vector2.y, 550), 2670);
+        camera.position.set(x, y, 0);
         camera.update();
     }
 
