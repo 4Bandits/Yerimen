@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CharacterStatus {
 
-    private Double hp = 100d;
+    private int hp = 100;
     private Double mana = 100d;
     private Integer movSpeed = 10;
     private Integer atackSpeed = 10;
@@ -18,7 +18,7 @@ public class CharacterStatus {
     private Integer magicResistance = 10;
     private List<Class<? extends Power>> powers = Arrays.asList(FireBall.class);
 
-    public Double getHp() {
+    public int getHp() {
         return hp;
     }
 

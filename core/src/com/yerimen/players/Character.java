@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.yerimen.bars.HealthBar;
 import com.yerimen.json.PlayerJsonBuilder;
 import com.yerimen.textures.PlayerTexture;
 import org.json.JSONObject;
@@ -22,6 +23,7 @@ public class Character {
     private TextureRegion currentFrame;
     protected float stateTime;
     protected boolean isMoving;
+    protected HealthBar healthBar;
 
     public Character(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
         this.characterID = characterID;
@@ -32,13 +34,17 @@ public class Character {
         this.direction = "left";
         this.currentFrame = playerTexture.getStandFrontAnimation().getKeyFrame(0, true);
         this.isMoving = false;
+        this.healthBar = new HealthBar(position.x, position.y, 8, 70);
     }
 
-    public String getCharacterID(){ return characterID; }
+    public String getCharacterID() {
+        return characterID;
+    }
 
     public void render(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Color color) {
         spriteBatch.draw(currentFrame, sprite.getX(), sprite.getY());
         renderOnMiniMap(spriteBatch, shapeRenderer, color);
+        healthBar.render(spriteBatch);
     }
 
     private void renderOnMiniMap(SpriteBatch spriteBatch, ShapeRenderer shapeRenderer, Color color) {
@@ -128,13 +134,14 @@ public class Character {
             }
             setMoving(false);
         }
+        healthBar.update(getStatus().getHp(), getXPosition(), getYPosition() + 70);
     }
 
-    public Rectangle getBounds(){
+    public Rectangle getBounds() {
         return new Rectangle(getXPosition() + 22, getYPosition(), 30, 65);
     }
 
-    public void isAttacked(){
+    public void isAttacked() {
         // Restar vida - quizas pasar el poder para saber cuanta vida sacar
     }
 

@@ -18,11 +18,13 @@ public class TextureManager {
     private CharacterStatus vampireStatus;
     private Texture fireBall;
     private Texture grass;
-
+    private Texture health;
+    private Texture healthContainer;
 
     private TextureManager(){
         initializePlayerTextures();
         initializePowers();
+        initializeBars();
     }
 
     private void initializePowers() {
@@ -40,6 +42,11 @@ public class TextureManager {
         vampireTexture = new VampireTexture(vampire, 48);
         vampireStatus = new CharacterStatus();
         grass = new Texture("images/grass.jpg");
+    }
+
+    private void initializeBars() {
+        health = new Texture("images/healthbar.png");
+        healthContainer = new Texture("images/healthbarContainer.png");
     }
 
     public static TextureManager getInstance() {
@@ -89,5 +96,13 @@ public class TextureManager {
 
     public Texture getGrass() {
         return grass;
+    }
+
+    public Texture getHealth() {
+        return health;
+    }
+
+    public Texture getHealthContainer() {
+        return healthContainer;
     }
 }

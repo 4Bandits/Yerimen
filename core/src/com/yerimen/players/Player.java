@@ -35,6 +35,7 @@ public class Player extends Character implements Observable {
         if (this.isTakenDamage()) {
 
         }
+        healthBar.update(getStatus().getHp(), getXPosition(), getYPosition() + 70);
     }
 
     private void processAttack(float delta, OrthographicCamera camera) {
