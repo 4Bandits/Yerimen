@@ -8,7 +8,7 @@ public class PlayerJsonBuilder {
     private String characterID;
     private float x;
     private float y;
-    private Double health;
+    private int health;
     private String direction;
     private String name;
 
