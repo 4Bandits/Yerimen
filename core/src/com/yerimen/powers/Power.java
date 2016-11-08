@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class Power extends Sprite{
+public class Power extends Sprite {
 
     private Float velocity;
     private Float distance;
@@ -22,8 +22,9 @@ public class Power extends Sprite{
     private String characterID;
     private String attackID;
     private int damage;
+    private float cooldown;
 
-    public Power(String characterID, String attackID, Texture texture, Float velocity, Float distance, Vector2 destination, Vector2 startPosition, int damage){
+    public Power(String characterID, String attackID, Texture texture, Float velocity, Float distance, Vector2 destination, Vector2 startPosition, int damage, float cooldown) {
         super(texture);
         this.characterID = characterID;
         this.attackID = attackID;
@@ -34,27 +35,33 @@ public class Power extends Sprite{
         this.time = this.getTime();
         this.acceleration = getAcceleration();
         this.damage = damage;
+        this.cooldown = cooldown;
+    }
+
+    public Power(int damage, float cooldown ) {
+        this.damage = damage;
+        this.cooldown = cooldown;
     }
 
     private Vector2 getAcceleration() {
-        return new Vector2((this.destination.x - this.getX()) / this.time, (this.destination.y - this.getY() )/ this.time);
+        return new Vector2((this.destination.x - this.getX()) / this.time, (this.destination.y - this.getY()) / this.time);
     }
 
-    private Float getTime(){
+    private Float getTime() {
         return this.distance / this.velocity;
     }
 
-    public void update(float deltaTime, List<Character> players, GameContent gameContent){
+    public void update(float deltaTime, List<Character> players, GameContent gameContent) {
         this.translate(this.acceleration.x, this.acceleration.y);
         this.detectCollision(players, gameContent);
     }
 
-    public void render(SpriteBatch spriteBatch){
+    public void render(SpriteBatch spriteBatch) {
         float angle = this.acceleration.angle();
-        spriteBatch.draw(new TextureRegion(this.getTexture()), this.getX(), this.getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(),this.getScaleX(), this.getScaleY(), angle);
+        spriteBatch.draw(new TextureRegion(this.getTexture()), this.getX(), this.getY(), this.getOriginX(), this.getOriginY(), this.getWidth(), this.getHeight(), this.getScaleX(), this.getScaleY(), angle);
     }
 
-    public JSONObject toJson(){
+    public JSONObject toJson() {
         return new PowerJsonBuilder(this).build();
     }
 
@@ -78,23 +85,28 @@ public class Power extends Sprite{
         return attackID;
     }
 
-    private void detectCollision(List<Character> players, GameContent gameContent){
-        for(Character player : players){
-            if(this.isInCollisionWith(player)){
+    private void detectCollision(List<Character> players, GameContent gameContent) {
+        for (Character player : players) {
+            if (this.isInCollisionWith(player)) {
                 this.notifyCollision(gameContent);
                 player.isAttacked(this.damage);
             }
         }
     }
 
-    private Boolean isInCollisionWith(Character player){
+    private Boolean isInCollisionWith(Character player) {
         return !player.getCharacterID().contentEquals(this.getCharacterID()) && this.getBoundingRectangle().overlaps(player.getBounds());
     }
 
-    private void notifyCollision(GameContent gameContent){
+    private void notifyCollision(GameContent gameContent) {
         gameContent.removePower(this);
     }
 
+    public float getCooldown() {
+        return cooldown;
+    }
 
-
+    public String getType() {
+        return this.getClass().getSimpleName().toLowerCase();
+    }
 }

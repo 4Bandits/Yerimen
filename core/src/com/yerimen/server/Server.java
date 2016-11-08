@@ -3,7 +3,9 @@ package com.yerimen.server;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PowerJsonBuilder;
 import com.yerimen.players.Player;
+import com.yerimen.powers.FireBall;
 import com.yerimen.powers.Power;
+import com.yerimen.powers.PowerFactory;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.user.UserInformation;
 import io.socket.client.IO;
@@ -37,16 +39,16 @@ public class Server implements Observer {
 
     private void configSocketEvents() {
         socket
-            .on("getStartedInfo", this::getStartedInfo)
-            .on("newPlayer", this::newPlayer)
-            .on("playerDisconnected", this::playerDisconnected)
-            .on("getEnemies", this::getPlayersInServer)
-            .on("playerMoved", this::playerMoved)
-            .on("playerAttack", this::playerAttack);
+                .on("getStartedInfo", this::getStartedInfo)
+                .on("newPlayer", this::newPlayer)
+                .on("playerDisconnected", this::playerDisconnected)
+                .on("getEnemies", this::getPlayersInServer)
+                .on("playerMoved", this::playerMoved)
+                .on("playerAttack", this::playerAttack);
     }
 
     private void connectionEvent() {
-        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0));
+        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower("fireball"));
         this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
     }
@@ -104,7 +106,7 @@ public class Server implements Observer {
     }
 
 
-    private void getStartedInfo(Object[] args){
+    private void getStartedInfo(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
             this.gameContent.getMainPlayer().setCharacterID(data.getString("socketID"));
@@ -126,7 +128,7 @@ public class Server implements Observer {
         socket.emit("playerAttack", power.toJson());
     }
 
-    public void destroyPower(Power power){
+    public void destroyPower(Power power) {
         socket.emit("destroyPower", power.toJson());
     }
 

@@ -3,27 +3,28 @@ package com.yerimen.players;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.yerimen.powers.FireBall;
 import com.yerimen.powers.Power;
+import com.yerimen.powers.PowerFactory;
 import com.yerimen.server.Observable;
 import com.yerimen.textures.PlayerTexture;
 
 public class Player extends Character implements Observable {
 
     private Integer nextInt;
-    private double cooldown = 0.5;
+    private float cooldown;
     private double timer;
     private int currentSpeed;
+    private Power power;
 
-    public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
+    public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
         super(characterID, playerTexture, playerStatus, position);
         this.nextInt = 0;
         this.currentSpeed = 1;
+        this.power = power;
+        this.cooldown = power.getCooldown();
     }
 
     @Override
@@ -35,6 +36,12 @@ public class Player extends Character implements Observable {
         if (this.isTakenDamage()) {
 
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1) || Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
+            this.setPower(PowerFactory.getPower("fireball"));
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_2) || Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
+            this.setPower(PowerFactory.getPower("iceball"));
+        }
         healthBar.update(getStatus().getHp(), getXPosition(), getYPosition() + 70);
     }
 
@@ -43,7 +50,7 @@ public class Player extends Character implements Observable {
             Vector3 mousePosition = this.getMousePosition(camera, Gdx.input.getX(), Gdx.input.getY());
             this.attack(mousePosition);
             timer = 0;
-            cooldown = 0.5f;
+            cooldown = power.getCooldown();
         } else {
             timer += delta;
         }
@@ -72,7 +79,7 @@ public class Player extends Character implements Observable {
     private void attack(Vector3 vector3) {
         Vector2 vector2 = new Vector2(vector3.x, vector3.y);
         Float distance = this.getPosition().dst(vector2);
-        Power power = new FireBall(this.getCharacterID(), this.getAttackID(), distance, vector2, this.getPosition());
+        Power power = PowerFactory.getPower(this.getCharacterID(), this.getAttackID(), distance, vector2, this.getPosition(), this.power.getType());
         this.notify(power);
     }
 
@@ -104,5 +111,10 @@ public class Player extends Character implements Observable {
         this.translate(x, y).setDirection(direction);
         this.notify(this.toJson());
         setCurrentFrame(animation.getKeyFrame(stateTime, true));
+    }
+
+    public Player setPower(Power power) {
+        this.power = power;
+        return this;
     }
 }

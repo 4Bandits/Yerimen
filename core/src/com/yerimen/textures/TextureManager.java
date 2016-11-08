@@ -20,6 +20,7 @@ public class TextureManager {
     private Texture grass;
     private Texture health;
     private Texture healthContainer;
+    private Texture iceBall;
 
     private TextureManager(){
         initializePlayerTextures();
@@ -29,6 +30,7 @@ public class TextureManager {
 
     private void initializePowers() {
         fireBall = new Texture("images/fireball.png");
+        iceBall = new Texture("images/iceBall.png");
     }
 
     private void initializePlayerTextures() {
@@ -105,4 +107,6 @@ public class TextureManager {
     public Texture getHealthContainer() {
         return healthContainer;
     }
+
+    public Texture getIceBall() { return iceBall; }
 }

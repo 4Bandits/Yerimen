@@ -34,7 +34,7 @@ public class Character {
         this.direction = "left";
         this.currentFrame = playerTexture.getStandFrontAnimation().getKeyFrame(0, true);
         this.isMoving = false;
-        this.healthBar = new HealthBar(position.x, position.y, 8, 70);
+        this.healthBar = new HealthBar(position.x, position.y, 5, 70);
     }
 
     public String getCharacterID() {
