@@ -86,6 +86,7 @@ public class Player extends Character implements Observable {
         Vector2 vector2 = new Vector2(vector3.x, vector3.y);
         Float distance = this.getPosition().dst(vector2);
         Power power = PowerFactory.getPower(this.getCharacterID(), this.getAttackID(), distance, vector2, this.getPosition(), this.power.getType());
+        power.reproduceSound();
         this.notify(power);
     }
 

@@ -54,4 +54,8 @@ public class CharacterStatus {
         return hp-= value;
     }
 
+    public boolean isDead(){
+        return hp > 0;
+    }
+
 }

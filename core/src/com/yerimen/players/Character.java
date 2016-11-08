@@ -143,7 +143,8 @@ public class Character {
 
     public void isAttacked(int damage) {
         getStatus().subtractHp(damage);
-        // Restar vida - quizas pasar el poder para saber cuanta vida sacar
-    }
+        if (getStatus().isDead()) {
 
+        }
+    }
 }

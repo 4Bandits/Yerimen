@@ -1,6 +1,8 @@
 package com.yerimen.powers;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
+import com.yerimen.sounds.SoundManager;
 import com.yerimen.textures.TextureManager;
 
 public class FireBall extends Power {
@@ -16,5 +18,11 @@ public class FireBall extends Power {
     @Override
     public PowerType getType() {
         return PowerType.Fireball;
+    }
+
+    @Override
+    public void reproduceSound() {
+        Sound sound = SoundManager.getInstance().getFireball();
+        sound.play(0.8f);
     }
 }

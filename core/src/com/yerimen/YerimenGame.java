@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Matrix4;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.screens.mainMenu.MainMenuScreen;
 import com.yerimen.server.Server;
+import com.yerimen.sounds.SoundManager;
 import com.yerimen.textures.TextureManager;
 import com.yerimen.user.UserInformation;
 
@@ -19,6 +20,7 @@ public class YerimenGame extends Game {
 	@Override
 	public void create () {
         TextureManager.getInstance();
+		SoundManager.getInstance();
 		this.batch = new SpriteBatch();
 		this.shapeRenderer = new ShapeRenderer();
 		this.server = new Server();

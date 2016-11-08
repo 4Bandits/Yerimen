@@ -108,4 +108,5 @@ public abstract class Power extends Sprite {
 
     public abstract PowerType getType();
 
+    public abstract void reproduceSound();
 }
