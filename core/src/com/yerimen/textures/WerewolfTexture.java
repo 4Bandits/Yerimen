@@ -3,9 +3,9 @@ package com.yerimen.textures;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 
-public class WerewolfTexture extends PlayerTexture{
+public class WerewolfTexture extends PlayerTexture {
 
-    public WerewolfTexture(Texture texture, Integer size){
+    public WerewolfTexture(Texture texture, Integer size) {
         this.texture = texture;
         standFrontAnimation = new Animation(0.3f, getFrames(texture, 0, 1, size));
         standBackAnimation = new Animation(0.3f, getFrames(texture, 3, 1, size));
