@@ -6,6 +6,7 @@ import com.yerimen.players.Player;
 import com.yerimen.powers.FireBall;
 import com.yerimen.powers.Power;
 import com.yerimen.powers.PowerFactory;
+import com.yerimen.powers.PowerType;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.user.UserInformation;
 import io.socket.client.IO;
@@ -48,7 +49,7 @@ public class Server implements Observer {
     }
 
     private void connectionEvent() {
-        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower("fireball"));
+        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
         this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
     }

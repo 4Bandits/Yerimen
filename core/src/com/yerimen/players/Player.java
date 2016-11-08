@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.yerimen.powers.Power;
 import com.yerimen.powers.PowerFactory;
+import com.yerimen.powers.PowerType;
 import com.yerimen.server.Observable;
 import com.yerimen.textures.PlayerTexture;
 
@@ -32,17 +33,22 @@ public class Player extends Character implements Observable {
         stateTime += delta;
         processMove();
         processAttack(delta, camera);
+        processSelectPower();
 
         if (this.isTakenDamage()) {
 
         }
+
+        healthBar.update(getStatus().getHp(), getXPosition(), getYPosition() + 70);
+    }
+
+    private void processSelectPower(){
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1) || Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
-            this.setPower(PowerFactory.getPower("fireball"));
+            this.setPower(PowerFactory.getPower(PowerType.Fireball));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_2) || Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
-            this.setPower(PowerFactory.getPower("iceball"));
+            this.setPower(PowerFactory.getPower(PowerType.Iceball));
         }
-        healthBar.update(getStatus().getHp(), getXPosition(), getYPosition() + 70);
     }
 
     private void processAttack(float delta, OrthographicCamera camera) {
@@ -113,7 +119,7 @@ public class Player extends Character implements Observable {
         setCurrentFrame(animation.getKeyFrame(stateTime, true));
     }
 
-    public Player setPower(Power power) {
+    private Player setPower(Power power) {
         this.power = power;
         return this;
     }

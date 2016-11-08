@@ -3,6 +3,7 @@ package com.yerimen.json;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.powers.Power;
 import com.yerimen.powers.PowerFactory;
+import com.yerimen.powers.PowerType;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,7 +13,7 @@ public class PowerJsonBuilder {
     private String attackID;
     private Float x;
     private Float y;
-    private String type;
+    private PowerType type;
     private Float velocity;
     private Float distance;
     private Float destinationX;
@@ -37,7 +38,7 @@ public class PowerJsonBuilder {
             data.put("attackID", attackID);
             data.put("x", x);
             data.put("y", y);
-            data.put("type", type);
+            data.put("type", type.ordinal());
             data.put("velocity", velocity);
             data.put("distance", distance);
             data.put("destinationX", destinationX);
@@ -52,13 +53,13 @@ public class PowerJsonBuilder {
         try {
             characterID = jsonObject.getString("characterID");
             attackID = jsonObject.getString("attackID");
-            x = new Float(jsonObject.getDouble("x"));
-            y = new Float(jsonObject.getDouble("y"));
-            type = jsonObject.getString("type");
-            velocity = new Float(jsonObject.getDouble("velocity"));
-            distance = new Float(jsonObject.getDouble("distance"));
-            destinationX = new Float(jsonObject.getDouble("destinationX"));
-            destinationY = new Float(jsonObject.getDouble("destinationY"));
+            x = (float) jsonObject.getDouble("x");
+            y = (float) jsonObject.getDouble("y");
+            type =  PowerType.values() [jsonObject.getInt("type")];
+            velocity = (float) jsonObject.getDouble("velocity");
+            distance = (float) jsonObject.getDouble("distance");
+            destinationX = (float) jsonObject.getDouble("destinationX");
+            destinationY = (float) jsonObject.getDouble("destinationY");
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Player Error");
         }
