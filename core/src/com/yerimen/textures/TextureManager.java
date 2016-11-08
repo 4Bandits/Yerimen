@@ -13,9 +13,12 @@ public class TextureManager {
     private PlayerTexture werewolfTexture;
     private Texture vampire;
     private PlayerTexture vampireTexture;
+    private Texture rockman;
+    private PlayerTexture rockmanTexture;
     private CharacterStatus wizardStatus;
     private CharacterStatus werewolfStatus;
     private CharacterStatus vampireStatus;
+    private CharacterStatus rockmanStatus;
     private Texture fireBall;
     private Texture grass;
     private Texture health;
@@ -34,16 +37,19 @@ public class TextureManager {
     }
 
     private void initializePlayerTextures() {
-        wizard = new Texture("images/wizard.png");
-        wizardTexture = new WizardTexture(wizard, 78);
+        wizard = new Texture("images/bulk.png");
+        wizardTexture = new WizardTexture(wizard, 80);
         wizardStatus = new CharacterStatus();
         werewolf = new Texture("images/werewolf.png");
         werewolfTexture = new WerewolfTexture(werewolf, 80);
         werewolfStatus = new CharacterStatus();
-        vampire = new Texture("images/vamp.png");
-        vampireTexture = new VampireTexture(vampire, 48);
+        vampire = new Texture("images/rat.png");
+        vampireTexture = new VampireTexture(vampire, 80);
         vampireStatus = new CharacterStatus();
         grass = new Texture("images/grass.jpg");
+        rockman = new Texture("images/rockman.png");
+        rockmanTexture = new VampireTexture(rockman, 80);
+        rockmanStatus = new CharacterStatus();
     }
 
     private void initializeBars() {
@@ -82,6 +88,10 @@ public class TextureManager {
         return vampireTexture;
     }
 
+    public PlayerTexture getRockmanTexture() {
+        return rockmanTexture;
+    }
+
     public CharacterStatus getWizardStatus() {
         return wizardStatus;
     }
@@ -92,6 +102,10 @@ public class TextureManager {
 
     public CharacterStatus getVampireStatus() {
         return vampireStatus;
+    }
+
+    public CharacterStatus getRockmanStatus() {
+        return rockmanStatus;
     }
 
     public Texture getFireBall() { return fireBall; }
@@ -109,4 +123,7 @@ public class TextureManager {
     }
 
     public Texture getIceBall() { return iceBall; }
+
+
+
 }
