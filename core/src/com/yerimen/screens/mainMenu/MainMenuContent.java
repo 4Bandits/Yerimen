@@ -19,6 +19,7 @@ public class MainMenuContent {
     private CheckBox vampireOption;
     private CheckBox werewolfOption;
     private CheckBox wizardOption;
+    private CheckBox rockmanOption;
     private TextButton startGameButton;
     private ButtonGroup characterOptions;
     private Label serverErrorMessage;
@@ -44,21 +45,22 @@ public class MainMenuContent {
     }
 
     private void drawInTable() {
-        this.table.add(this.usernameLabel).uniform().colspan(3);
+        this.table.add(this.usernameLabel).uniform().colspan(4);
         this.table.row().space(10);
-        this.table.add(this.usernameInput).width(100).uniform().colspan(3);
+        this.table.add(this.usernameInput).width(100).uniform().colspan(4);
         this.table.row().space(10);
-        this.table.add(this.serverUrlLabel).uniform().colspan(3);
+        this.table.add(this.serverUrlLabel).uniform().colspan(4);
         this.table.row().space(10);
-        this.table.add(this.serverUrlInput).width(200).uniform().colspan(3);
+        this.table.add(this.serverUrlInput).width(200).uniform().colspan(4);
         this.table.row().space(10);
-        this.table.add(this.characterLabel).uniform().colspan(3);
+        this.table.add(this.characterLabel).uniform().colspan(4);
         this.table.row().space(10);
         this.table.add(this.werewolfOption);
         this.table.add(this.vampireOption);
         this.table.add(this.wizardOption);
+        this.table.add(this.rockmanOption);
         this.table.row().space(50);
-        this.table.add(this.startGameButton).width(200).colspan(3);
+        this.table.add(this.startGameButton).width(200).colspan(4);
     }
 
     private void initializeTable() {
@@ -76,7 +78,8 @@ public class MainMenuContent {
         this.werewolfOption = new CheckBox("Werewolf", skin);
         this.vampireOption = new CheckBox("Vampire", skin);
         this.wizardOption = new CheckBox("Wizard", skin);
-        this.characterOptions = new ButtonGroup(this.vampireOption, this.werewolfOption, this.wizardOption);
+        this.rockmanOption = new CheckBox("Rockman", skin);
+        this.characterOptions = new ButtonGroup(this.vampireOption, this.werewolfOption, this.wizardOption, this.rockmanOption);
         this.characterOptions.setChecked("Werewolf");
     }
 

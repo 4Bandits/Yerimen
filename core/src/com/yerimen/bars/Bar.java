@@ -28,7 +28,7 @@ public class Bar {
     public void update(int width, float x, float y) {
         percentage = width / 100f;
         positionX = x + 5;
-        positionY = y;
+        positionY = y + 5;
     }
 
     public void render(SpriteBatch batch) {

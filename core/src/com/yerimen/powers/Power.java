@@ -12,7 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class Power extends Sprite {
+public abstract class Power extends Sprite {
 
     private Float velocity;
     private Float distance;
@@ -106,7 +106,6 @@ public class Power extends Sprite {
         return cooldown;
     }
 
-    public String getType() {
-        return this.getClass().getSimpleName().toLowerCase();
-    }
+    public abstract PowerType getType();
+
 }

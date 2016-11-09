@@ -26,6 +26,8 @@ public class UserInformation {
                 return TextureManager.getInstance().getVampireTexture();
             case "Wizard":
                 return TextureManager.getInstance().getWizardTexture();
+            case "Rockman":
+                return TextureManager.getInstance().getRockmanTexture();
         }
         return null;
     }
@@ -38,6 +40,8 @@ public class UserInformation {
                 return TextureManager.getInstance().getVampireStatus();
             case "Wizard":
                 return TextureManager.getInstance().getWizardStatus();
+            case "Rockman":
+                return TextureManager.getInstance().getRockmanStatus();
         }
         return null;
     }
