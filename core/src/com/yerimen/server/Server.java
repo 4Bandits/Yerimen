@@ -57,7 +57,10 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String newCharacterID = data.getString("characterID");
-            gameContent.addEnemy(newCharacterID);
+            String newCharacterSelected = data.getString("characterSelected");
+            Double x = data.getDouble("x");
+            Double y = data.getDouble("y");
+            gameContent.addEnemy(newCharacterID, new Vector2(x.floatValue(),y.floatValue()), newCharacterSelected);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -79,7 +82,8 @@ public class Server implements Observer {
             for (int i = 0; i < objects.length(); i++) {
                 float x = ((Double) objects.getJSONObject(i).getDouble("x")).floatValue();
                 float y = ((Double) objects.getJSONObject(i).getDouble("y")).floatValue();
-                gameContent.addEnemy(objects.getJSONObject(i).getString("characterID"), new Vector2(x, y));
+                String name = objects.getJSONObject(i).getString("name");
+                gameContent.addEnemy(objects.getJSONObject(i).getString("characterID"), new Vector2(x, y), name);
             }
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Get All Players Error");
@@ -114,6 +118,7 @@ public class Server implements Observer {
             Double x = data.getDouble("positionX");
             Double y = data.getDouble("positionY");
             this.gameContent.getMainPlayer().setPosition(x.floatValue(), y.floatValue());
+            socket.emit("notifyNewPlayer", this.getMainPlayerSelected());
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
@@ -132,4 +137,15 @@ public class Server implements Observer {
         socket.emit("destroyPower", power.toJson());
     }
 
+    public JSONObject getMainPlayerSelected() {
+        JSONObject data = new JSONObject();
+        try {
+            data.put("name", this.gameContent.getMainPlayer().getName());
+            data.put("x", this.gameContent.getMainPlayer().getXPosition());
+            data.put("y", this.gameContent.getMainPlayer().getYPosition());
+            return data;
+        }catch (Exception e){
+            throw new RuntimeException("Error - Json");
+        }
+    }
 }
