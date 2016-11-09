@@ -54,4 +54,8 @@ public class CharacterStatus {
         return hp-= value;
     }
 
+    public void respawnd(){
+        hp = 100;
+    }
+
 }
