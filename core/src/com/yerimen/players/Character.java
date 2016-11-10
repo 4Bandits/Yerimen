@@ -24,6 +24,7 @@ public class Character {
     protected float stateTime;
     protected boolean isMoving;
     protected HealthBar healthBar;
+    protected Vector2 respawndPoint;
 
     public Character(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
         this.characterID = characterID;
@@ -35,6 +36,7 @@ public class Character {
         this.currentFrame = playerTexture.getStandFrontAnimation().getKeyFrame(0, true);
         this.isMoving = false;
         this.healthBar = new HealthBar(position.x, position.y, 5, 70);
+        this.respawndPoint = position;
     }
 
     public String getCharacterID() {
@@ -143,8 +145,21 @@ public class Character {
 
     public void isAttacked(int damage) {
         getStatus().subtractHp(damage);
-        if (getStatus().isDead()) {
-
+        if(this.isDead()){
+            this.goToRespawnPoint();
+            this.respawn();
         }
     }
+    private boolean isDead(){
+        return this.getStatus().getHp() <= 0;
+    }
+
+    protected void goToRespawnPoint(){
+        this.sprite.setPosition(this.respawndPoint.x, this.respawndPoint.y);
+    }
+
+    private void respawn(){
+        this.getStatus().respawnd();
+    }
+
 }

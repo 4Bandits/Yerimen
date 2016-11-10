@@ -10,6 +10,7 @@ import com.yerimen.level.MiniMap;
 import com.yerimen.players.Character;
 import com.yerimen.players.CharacterStatus;
 import com.yerimen.players.Player;
+import com.yerimen.players.PlayerFactory;
 import com.yerimen.powers.Power;
 import com.yerimen.server.Server;
 import com.yerimen.textures.TextureManager;
@@ -57,12 +58,8 @@ public class GameContent {
         return this.mainPlayer;
     }
 
-    public void addEnemy(String enemyId) {
-        enemies.put(enemyId, new Character(enemyId, TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0, 0)));
-    }
-
-    public void addEnemy(String enemyId, Vector2 position) {
-        enemies.put(enemyId, new Character(enemyId, TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), position));
+    public void addEnemy(String enemyId, Vector2 position, String characterSelected) {
+        enemies.put(enemyId, PlayerFactory.getCharacter(enemyId,position,characterSelected));
     }
 
     public void removeEnemy(String enemyId) {

@@ -11,12 +11,11 @@ server.listen(9000, function(){
 });
 
 io.on('connection', function(socket){
-    var startedInfo = getStartedInfo(socket);
 
+    var startedInfo = getStartedInfo(socket);
     socket.emit('getStartedInfo', startedInfo);
 	socket.emit('getEnemies', players);
 	socket.emit('getPowers', powers);
-	socket.broadcast.emit("newPlayer", { characterID: socket.id });
 
 	socket.on('playerMoved', function(data){
 	    socket.broadcast.emit('playerMoved', data);
@@ -39,8 +38,14 @@ io.on('connection', function(socket){
 		removePlayer(socket.id);
 	});
 
-	addNewPlayer(socket, startedInfo.positionX, startedInfo.positionY);
+	socket.on('notifyNewPlayer', function(data){
+	    var name = data.name;
+	    addNewPlayer(socket, data.x, data.y, name);
+	    socket.broadcast.emit("newPlayer", { characterID: socket.id, characterSelected: name, x: data.x, y: data.y});
+	});
+
 });
+
 
 function Player(characterID, x, y, health, direction, name){
     this.characterID = characterID;
@@ -60,8 +65,8 @@ function currentTimestamp() {
     return date.toLocaleTimeString()
 }
 
-function addNewPlayer(socket, x, y) {
-    players.push(new Player(socket.id, x,y, 100, 'right', 'werewolf'));
+function addNewPlayer(socket, x, y, name) {
+    players.push(new Player(socket.id, x,y, 100, 'right', name));
     log("Player with ID [" + socket.id + "] just logged in.");
 }
 

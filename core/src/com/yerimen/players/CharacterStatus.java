@@ -54,8 +54,8 @@ public class CharacterStatus {
         return hp-= value;
     }
 
-    public boolean isDead(){
-        return hp > 0;
+    public void respawnd(){
+        hp = 100;
     }
 
 }

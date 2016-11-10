@@ -112,6 +112,7 @@ public class Player extends Character implements Observable {
 
     public void setPosition(float x, float y) {
         this.sprite.setPosition(x, y);
+        this.respawndPoint.set(x,y);
     }
 
     private void translate(int x, int y, String direction, Animation animation) {
@@ -124,4 +125,5 @@ public class Player extends Character implements Observable {
         this.power = power;
         return this;
     }
+
 }
