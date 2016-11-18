@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.YerimenGame;
 
@@ -11,12 +13,14 @@ public class GameScreen extends ScreenAdapter {
 
     private YerimenGame game;
     private GameContent gameContent;
+    private GameHud gameHud;
     private OrthographicCamera camera;
 
     public GameScreen(YerimenGame game) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.game = game;
         this.gameContent = new GameContent();
+        this.gameHud = new GameHud();
         this.game.connect(this.gameContent);
 
         this.initializeCamera();
@@ -48,6 +52,10 @@ public class GameScreen extends ScreenAdapter {
         this.game.getBatch().begin();
         this.gameContent.render(this.game.getBatch(), this.game.getShapeRenderer());
         this.game.getBatch().end();
+
+        this.game.getHudBatch().begin();
+        this.gameHud.render(this.game.getHudBatch());
+        this.game.getHudBatch().end();
     }
 
     private void updateCamera() {
