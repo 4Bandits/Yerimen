@@ -13,6 +13,7 @@ import com.yerimen.user.UserInformation;
 public class YerimenGame extends Game {
 
 	private SpriteBatch batch;
+	private SpriteBatch hudBatch;
 	private Server server;
 	private ShapeRenderer shapeRenderer;
 
@@ -20,6 +21,7 @@ public class YerimenGame extends Game {
 	public void create () {
         TextureManager.getInstance();
 		this.batch = new SpriteBatch();
+		this.hudBatch = new SpriteBatch();
 		this.shapeRenderer = new ShapeRenderer();
 		this.server = new Server();
 		this.setScreen(new MainMenuScreen(this));
@@ -33,6 +35,10 @@ public class YerimenGame extends Game {
 	public SpriteBatch getBatch(){
 	    return this.batch;
     }
+
+    public SpriteBatch getHudBatch() {
+    	return this.hudBatch;
+	}
 
     public ShapeRenderer getShapeRenderer(){return this.shapeRenderer;}
 
