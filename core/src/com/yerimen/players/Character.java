@@ -111,7 +111,10 @@ public class Character {
     }
 
     public Character translate(float x, float y) {
-        sprite.translate(x, y);
+        float x1 = Math.min(Math.max(sprite.getX() + x, 0), 3120);
+        float y2 = Math.min(Math.max(sprite.getY() + y, 30), 3110);
+
+        sprite.setPosition(x1, y2);
         return this;
     }
 
