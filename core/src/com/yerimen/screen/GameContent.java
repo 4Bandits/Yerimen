@@ -1,7 +1,12 @@
 package com.yerimen.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.yerimen.players.Player;
 import com.yerimen.players.NullPlayer;
 import com.yerimen.server.Server;
@@ -22,6 +27,9 @@ public class GameContent {
         mainPlayer.update(delta, camera);
         this.server.getEnemies().forEach(enemy -> enemy.update(delta, camera));
         this.server.getPowers().forEach(power -> power.update(delta));    }
+
+
+
 
     public void render(SpriteBatch batch) {
 

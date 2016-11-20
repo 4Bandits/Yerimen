@@ -52,7 +52,7 @@ public class Server implements Observer {
     }
 
     private void connectionEvent() {
-        Player mainPlayer = new Player(TextureManager.getInstance().getWerewolfTexture(), TextureManager.getInstance().getWerewolfStatus(), new Vector2(0, 0));
+        Player mainPlayer = new Player(TextureManager.getInstance().getWerewolfTexture(), TextureManager.getInstance().getWerewolfStatus(), new Vector2(350, 350));
         this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
     }
@@ -61,7 +61,7 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String newPlayerID = data.getString("id");
-            enemies.put(newPlayerID, new Character(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(0, 0)));
+            enemies.put(newPlayerID, new Character(TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), new Vector2(350, 350)));
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }

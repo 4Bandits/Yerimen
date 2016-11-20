@@ -1,12 +1,18 @@
 package com.yerimen.players;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PlayerJsonBuilder;
 import com.yerimen.textures.PlayerTexture;
+import com.yerimen.textures.TextureManager;
 import org.json.JSONObject;
 
 public class Character {
@@ -52,6 +58,9 @@ public class Character {
     public Character setDirection(String direction) {
         this.direction = direction;
         return this;
+    }
+    public Sprite getSprite(){
+        return sprite;
     }
 
     public Character move(float x, float y) {
@@ -101,6 +110,9 @@ public class Character {
                 setCurrentFrame(playerTexture.getWalkLeftAnimation().getKeyFrame(stateTime, true));
             }
             setMoving(false);
+
         }
     }
+
+
 }
