@@ -7,6 +7,7 @@ import com.yerimen.powers.FireBall;
 import com.yerimen.powers.Power;
 import com.yerimen.powers.PowerFactory;
 import com.yerimen.powers.PowerType;
+import com.yerimen.screens.game.ConnectionScreen;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.user.UserInformation;
 import io.socket.client.IO;
@@ -20,22 +21,23 @@ public class Server implements Observer {
     private UserInformation userInformation;
     private Socket socket;
     private GameContent gameContent;
+    private ConnectionScreen cn;
 
-    public void attemptConnectionTo(String serverUrl, UserInformation userInformation) {
+    public Server(String serverUrl, UserInformation userInformation, ConnectionScreen cn) {
         try {
             this.socket = IO.socket(serverUrl);
             this.configSocketEvents();
             this.socket.connect();
             this.userInformation = userInformation;
+            this.cn = cn;
         } catch (Exception e) {
             throw new RuntimeException("Connection Error!");
         }
     }
 
-    public void connect(GameContent gameContent) {
+    public void setGameContent(GameContent gameContent){
         this.gameContent = gameContent;
         gameContent.setServer(this);
-        this.connectionEvent();
     }
 
     private void configSocketEvents() {
@@ -48,10 +50,14 @@ public class Server implements Observer {
                 .on("playerAttack", this::playerAttack);
     }
 
-    private void connectionEvent() {
+    public void connect() {
         Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
-        this.gameContent.setMainPlayer(mainPlayer);
         mainPlayer.addObserver(this);
+    }
+
+    public void pushPlayer(){
+        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
+        cn.SetPlayer(mainPlayer);
     }
 
     private void newPlayer(Object[] args) {
@@ -61,7 +67,7 @@ public class Server implements Observer {
             String newCharacterSelected = data.getString("characterSelected");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
-            gameContent.addEnemy(newCharacterID, new Vector2(x.floatValue(),y.floatValue()), newCharacterSelected);
+            gameContent.addEnemy(newCharacterID, new Vector2(x.floatValue(), y.floatValue()), newCharacterSelected);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -114,12 +120,14 @@ public class Server implements Observer {
     private void getStartedInfo(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            this.gameContent.getMainPlayer().setCharacterID(data.getString("socketID"));
+            //this.gameContent.getMainPlayer().setCharacterID(data.getString("socketID"));
 
             Double x = data.getDouble("positionX");
             Double y = data.getDouble("positionY");
-            this.gameContent.getMainPlayer().setPosition(x.floatValue(), y.floatValue());
-            socket.emit("notifyNewPlayer", this.getMainPlayerSelected());
+            //this.gameContent.getMainPlayer().setPosition(x.floatValue(), y.floatValue());
+           // socket.emit("notifyNewPlayer", this.getMainPlayerSelected());
+            Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
+            cn.SetPlayer(mainPlayer);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
@@ -145,7 +153,7 @@ public class Server implements Observer {
             data.put("x", this.gameContent.getMainPlayer().getXPosition());
             data.put("y", this.gameContent.getMainPlayer().getYPosition());
             return data;
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException("Error - Json");
         }
     }

@@ -1,27 +1,31 @@
 package com.yerimen.screens.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.YerimenGame;
+import com.yerimen.players.Player;
+import com.yerimen.screens.GameStateManager;
+import com.yerimen.screens.State;
+import com.yerimen.server.Server;
+import com.yerimen.user.UserInformation;
 
-public class GameScreen extends ScreenAdapter {
+public class GameScreen extends State {
 
-    private YerimenGame game;
     private GameContent gameContent;
     private GameHud gameHud;
-    private OrthographicCamera camera;
+    private Server server;
 
-    public GameScreen(YerimenGame game) {
+    public GameScreen(GameStateManager gsm, Server server, Player player) {
+        super(gsm);
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        this.game = game;
-        this.gameContent = new GameContent();
+        this.gameContent = new GameContent(player);
         this.gameHud = new GameHud();
-        this.game.connect(this.gameContent);
+        this.server = server;
+
 
         this.initializeCamera();
     }
@@ -32,30 +36,45 @@ public class GameScreen extends ScreenAdapter {
         camera.update();
     }
 
-    @Override
+/*
     public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        this.updateCamera();
-        this.game.setProjectionMatrix(camera.combined);
+
+
+
+       // this.ca game.setProjectionMatrix(camera.combined);
         this.update(delta);
         this.draw();
     }
+*/
+    @Override
+    protected void handleInput() {
 
-    private void update(float delta) {
+    }
+
+    public void update(float delta) {
         this.gameContent.update(delta, camera);
         this.updateCamera();
     }
 
-    private void draw() {
-        this.game.getBatch().begin();
-        this.gameContent.render(this.game.getBatch(), this.game.getShapeRenderer());
-        this.game.getBatch().end();
+    @Override
+    public void render(SpriteBatch sb, ShapeRenderer sr) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.updateCamera();
+        sb.setProjectionMatrix(camera.combined);
+        this.draw(sb, sr);
+    }
 
-        this.game.getHudBatch().begin();
-        this.gameHud.render(this.game.getHudBatch());
-        this.game.getHudBatch().end();
+    @Override
+    public void dispose() {
+
+    }
+
+    private void draw(SpriteBatch sb, ShapeRenderer sr) {
+        sb.begin();
+        this.gameContent.render(sb, sr);
+        this.gameHud.render(sb);
+        sb.end();
     }
 
     private void updateCamera() {

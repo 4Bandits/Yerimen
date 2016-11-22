@@ -28,7 +28,8 @@ public class GameContent {
     private List<Power> powers;
     private MiniMap miniMap;
 
-    public GameContent() {
+    public GameContent(Player player) {
+        this.mainPlayer = player;
         this.level = new Level(TextureManager.getInstance().getGrass());
         this.enemies = new HashMap<>();
         this.powers = new ArrayList<>();
@@ -48,10 +49,6 @@ public class GameContent {
         this.getPowers().forEach(power -> power.render(batch));
         mainPlayer.render(batch, shapeRenderer, Color.BLUE);
         this.miniMap.render(batch,shapeRenderer);
-    }
-
-    public void setMainPlayer(Player mainPlayer) {
-        this.mainPlayer = mainPlayer;
     }
 
     public Player getMainPlayer() {
