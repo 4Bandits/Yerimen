@@ -14,8 +14,8 @@ io.on('connection', function(socket){
 
     var startedInfo = getStartedInfo(socket);
     socket.emit('getStartedInfo', startedInfo);
-	socket.emit('getEnemies', players);
-	socket.emit('getPowers', powers);
+	//socket.emit('getEnemies', players);
+	//socket.emit('getPowers', powers);
 
 	socket.on('playerMoved', function(data){
 	    socket.broadcast.emit('playerMoved', data);
@@ -104,7 +104,9 @@ function getStartedInfo(socket){
     return {
                 socketID: socket.id,
                 positionX: vector2.x,
-                positionY: vector2.y
+                positionY: vector2.y,
+                players,
+                powers
            }
 }
 

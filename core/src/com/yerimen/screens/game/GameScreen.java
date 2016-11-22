@@ -6,26 +6,24 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.yerimen.YerimenGame;
+import com.yerimen.players.Character;
 import com.yerimen.players.Player;
 import com.yerimen.screens.GameStateManager;
 import com.yerimen.screens.State;
 import com.yerimen.server.Server;
-import com.yerimen.user.UserInformation;
+
+import java.util.HashMap;
 
 public class GameScreen extends State {
 
     private GameContent gameContent;
     private GameHud gameHud;
-    private Server server;
 
-    public GameScreen(GameStateManager gsm, Server server, Player player) {
+    public GameScreen(GameStateManager gsm, Server server, Player player, HashMap<String, Character> enemies) {
         super(gsm);
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        this.gameContent = new GameContent(player);
+        this.gameContent = new GameContent(player, server, enemies);
         this.gameHud = new GameHud();
-        this.server = server;
-
 
         this.initializeCamera();
     }
@@ -36,17 +34,6 @@ public class GameScreen extends State {
         camera.update();
     }
 
-/*
-    public void render(float delta) {
-
-
-
-
-       // this.ca game.setProjectionMatrix(camera.combined);
-        this.update(delta);
-        this.draw();
-    }
-*/
     @Override
     protected void handleInput() {
 
@@ -84,5 +71,4 @@ public class GameScreen extends State {
         camera.position.set(x, y, 0);
         camera.update();
     }
-
 }

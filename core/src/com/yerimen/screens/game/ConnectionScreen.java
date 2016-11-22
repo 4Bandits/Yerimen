@@ -5,17 +5,24 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.yerimen.players.Character;
 import com.yerimen.players.Player;
+import com.yerimen.powers.Power;
 import com.yerimen.screens.GameStateManager;
 import com.yerimen.screens.State;
 import com.yerimen.server.Server;
 import com.yerimen.textures.TextureManager;
 import com.yerimen.user.UserInformation;
 
+import java.util.HashMap;
+import java.util.List;
+
 public class ConnectionScreen extends State {
     private Server server;
     private Texture background;
     private Player player;
+    private HashMap<String, Character> enemies;
+    private List<Power> powers;
 
     public ConnectionScreen(GameStateManager gsm, String serverUrl, UserInformation userInformation) {
         super(gsm);
@@ -32,11 +39,13 @@ public class ConnectionScreen extends State {
     @Override
     public void update(float delta) {
         if (player != null) {
-            gsm.set(new GameScreen(gsm, server, player));
+
+            gsm.set(new GameScreen(gsm, server, player, enemies));
         }
     }
 
-    public void SetPlayer(Player player){
+    public void SetPlayer(Player player, HashMap<String, Character> players){
+        this.enemies = players;
         this.player = player;
     }
 

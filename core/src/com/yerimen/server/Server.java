@@ -2,7 +2,9 @@ package com.yerimen.server;
 
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PowerJsonBuilder;
+import com.yerimen.players.Character;
 import com.yerimen.players.Player;
+import com.yerimen.players.PlayerFactory;
 import com.yerimen.powers.FireBall;
 import com.yerimen.powers.Power;
 import com.yerimen.powers.PowerFactory;
@@ -15,6 +17,9 @@ import io.socket.client.Socket;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class Server implements Observer {
 
@@ -45,20 +50,10 @@ public class Server implements Observer {
                 .on("getStartedInfo", this::getStartedInfo)
                 .on("newPlayer", this::newPlayer)
                 .on("playerDisconnected", this::playerDisconnected)
-                .on("getEnemies", this::getPlayersInServer)
                 .on("playerMoved", this::playerMoved)
                 .on("playerAttack", this::playerAttack);
     }
 
-    public void connect() {
-        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
-        mainPlayer.addObserver(this);
-    }
-
-    public void pushPlayer(){
-        Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
-        cn.SetPlayer(mainPlayer);
-    }
 
     private void newPlayer(Object[] args) {
         JSONObject data = (JSONObject) args[0];
@@ -83,15 +78,19 @@ public class Server implements Observer {
         }
     }
 
-    private void getPlayersInServer(Object[] args) {
-        JSONArray objects = (JSONArray) args[0];
+    private HashMap<String, Character> getPlayersInServer(JSONArray args) {
+        HashMap<String, Character> enemies = new HashMap<>();
+
         try {
-            for (int i = 0; i < objects.length(); i++) {
-                float x = ((Double) objects.getJSONObject(i).getDouble("x")).floatValue();
-                float y = ((Double) objects.getJSONObject(i).getDouble("y")).floatValue();
-                String name = objects.getJSONObject(i).getString("name");
-                gameContent.addEnemy(objects.getJSONObject(i).getString("characterID"), new Vector2(x, y), name);
+            for (int i = 0; i < args.length(); i++) {
+                float x = ((Double) args.getJSONObject(i).getDouble("x")).floatValue();
+                float y = ((Double) args.getJSONObject(i).getDouble("y")).floatValue();
+                String name = args.getJSONObject(i).getString("name");
+                String id = args.getJSONObject(i).getString("characterID");
+                enemies.put(id, PlayerFactory.getCharacter(id,new Vector2(x,y),name));
+               // cn.addEnemy(args.getJSONObject(i).getString("characterID"), new Vector2(x, y), name);
             }
+            return enemies;
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Get All Players Error");
         }
@@ -120,17 +119,20 @@ public class Server implements Observer {
     private void getStartedInfo(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            //this.gameContent.getMainPlayer().setCharacterID(data.getString("socketID"));
+            String id = data.getString("socketID");
+            float x =(float) data.getDouble("positionX");
+            float y = (float)data.getDouble("positionY");
 
-            Double x = data.getDouble("positionX");
-            Double y = data.getDouble("positionY");
-            //this.gameContent.getMainPlayer().setPosition(x.floatValue(), y.floatValue());
-           // socket.emit("notifyNewPlayer", this.getMainPlayerSelected());
-            Player mainPlayer = new Player("", userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(0, 0), PowerFactory.getPower(PowerType.Fireball));
-            cn.SetPlayer(mainPlayer);
+            Player mainPlayer = new Player(id, userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
+            mainPlayer.addObserver(this);
+            cn.SetPlayer(mainPlayer, getPlayersInServer(data.getJSONArray("players")));
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
+    }
+
+    public void notifyNewPlayer(){
+        socket.emit("notifyNewPlayer", this.getMainPlayerSelected());
     }
 
     public void update(JSONObject jsonObject) {

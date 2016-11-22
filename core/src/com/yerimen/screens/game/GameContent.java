@@ -28,12 +28,15 @@ public class GameContent {
     private List<Power> powers;
     private MiniMap miniMap;
 
-    public GameContent(Player player) {
+    public GameContent(Player player, Server server, HashMap<String, Character> enemies) {
         this.mainPlayer = player;
         this.level = new Level(TextureManager.getInstance().getGrass());
-        this.enemies = new HashMap<>();
+        this.enemies = enemies;
         this.powers = new ArrayList<>();
         this.miniMap = new MiniMap();
+
+        server.setGameContent(this);
+        server.notifyNewPlayer();
     }
 
     public void update(float delta, OrthographicCamera camera) {
