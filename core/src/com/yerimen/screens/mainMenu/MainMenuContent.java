@@ -6,14 +6,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.yerimen.YerimenGame;
-import com.yerimen.screens.GameStateManager;
-import com.yerimen.screens.State;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
 import com.yerimen.screens.game.ConnectionScreen;
-import com.yerimen.screens.game.GameScreen;
 import com.yerimen.user.UserInformation;
 
-public class MainMenuContent  extends State {
+public class MainMenuContent  extends YerimenScreen {
 
     private Table table;
     private Label usernameLabel;
@@ -29,7 +27,7 @@ public class MainMenuContent  extends State {
     private ButtonGroup characterOptions;
     private Label serverErrorMessage;
 
-    public MainMenuContent(GameStateManager gsm) {
+    public MainMenuContent(ScreenManager gsm) {
         super(gsm);
         Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
@@ -139,9 +137,7 @@ public class MainMenuContent  extends State {
                 UserInformation userInformation = new UserInformation(usernameToUse(), characterToUse());
 
                 try {
-                   // game.attemptConnectionTo(serverUrlToConnect(), userInformation);
                     gsm.set(new ConnectionScreen(gsm, serverUrlToConnect(), userInformation));
-                    //game.setScreen(new GameScreen(game));
                 } catch (RuntimeException exception) {
                     table.row().space(10);
                     table.add(serverErrorMessage).uniform().colspan(3);

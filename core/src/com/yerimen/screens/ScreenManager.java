@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.Stack;
 
-public class GameStateManager {
-    private Stack<State> states;
+public class ScreenManager {
+    private Stack<YerimenScreen> states;
 
-    public  GameStateManager(){
-        states = new Stack<State>();
+    public ScreenManager(){
+        states = new Stack<>();
     }
 
-    public void push(State state){
+    public void push(YerimenScreen state){
         states.push(state);
     }
 
@@ -20,7 +20,7 @@ public class GameStateManager {
         states.pop();
     }
 
-    public void set(State state){
+    public void set(YerimenScreen state){
         states.pop();
         states.push(state);
     }

@@ -8,18 +8,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.players.Character;
 import com.yerimen.players.Player;
-import com.yerimen.screens.GameStateManager;
-import com.yerimen.screens.State;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
 import com.yerimen.server.Server;
 
 import java.util.HashMap;
 
-public class GameScreen extends State {
+public class GameScreen extends YerimenScreen {
 
     private GameContent gameContent;
     private GameHud gameHud;
 
-    public GameScreen(GameStateManager gsm, Server server, Player player, HashMap<String, Character> enemies) {
+    public GameScreen(ScreenManager gsm, Server server, Player player, HashMap<String, Character> enemies) {
         super(gsm);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.gameContent = new GameContent(player, server, enemies);

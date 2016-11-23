@@ -1,23 +1,21 @@
 package com.yerimen.screens.mainMenu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.yerimen.YerimenGame;
-import com.yerimen.screens.GameStateManager;
-import com.yerimen.screens.State;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
 
-public class MainMenuScreen extends State {
+public class MainMenuScreen extends YerimenScreen {
 
     private MainMenuContent content;
     private OrthographicCamera camera;
     private Stage stage;
 
-    public MainMenuScreen(GameStateManager gsm) {
+    public MainMenuScreen(ScreenManager gsm) {
         super(gsm);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         this.content = new MainMenuContent(gsm);

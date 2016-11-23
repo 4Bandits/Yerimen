@@ -5,12 +5,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
-public abstract class State {
+public abstract class YerimenScreen {
     protected OrthographicCamera camera;
     protected Vector3 mouse;
-    protected GameStateManager gsm;
+    protected ScreenManager gsm;
 
-    protected State(GameStateManager gsm){
+    protected YerimenScreen(ScreenManager gsm){
         this.gsm = gsm;
         this.camera = new OrthographicCamera();
         this.mouse = new Vector3();

@@ -9,6 +9,7 @@ public class PlayerFactory {
         switch (characterSelected) {
             case "Vampire": return new Character(characterID, TextureManager.getInstance().getVampireTexture(), new CharacterStatus(), position);
             case "Wizard": return new Character(characterID, TextureManager.getInstance().getWizardTexture(), new CharacterStatus(), position);
+            case "Rockman": return new Character(characterID, TextureManager.getInstance().getRockmanTexture(), new CharacterStatus(), position);
             default: return new Character(characterID, TextureManager.getInstance().getWerewolfTexture(), new CharacterStatus(), position);
         }
     }

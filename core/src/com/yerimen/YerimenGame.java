@@ -5,10 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.yerimen.screens.GameStateManager;
+import com.yerimen.screens.ScreenManager;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.screens.mainMenu.MainMenuScreen;
-import com.yerimen.server.Server;
 import com.yerimen.textures.TextureManager;
 import com.yerimen.user.UserInformation;
 
@@ -17,7 +16,7 @@ public class YerimenGame extends Game {
 	private SpriteBatch batch;
 	private SpriteBatch hudBatch;
 	private ShapeRenderer shapeRenderer;
-	private GameStateManager gsm;
+	private ScreenManager gsm;
 
 	@Override
 	public void create () {
@@ -25,7 +24,7 @@ public class YerimenGame extends Game {
 		this.batch = new SpriteBatch();
 		this.hudBatch = new SpriteBatch();
 		this.shapeRenderer = new ShapeRenderer();
-		gsm = new GameStateManager();
+		gsm = new ScreenManager();
 		gsm.push(new MainMenuScreen(gsm));
 		//this.setScreen(new MainMenuScreen(this));
 	}

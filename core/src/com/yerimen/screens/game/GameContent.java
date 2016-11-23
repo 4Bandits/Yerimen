@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.yerimen.level.Level;
 import com.yerimen.level.MiniMap;
 import com.yerimen.players.Character;
-import com.yerimen.players.CharacterStatus;
 import com.yerimen.players.Player;
 import com.yerimen.players.PlayerFactory;
 import com.yerimen.powers.Power;
@@ -36,7 +35,7 @@ public class GameContent {
         this.miniMap = new MiniMap();
 
         server.setGameContent(this);
-        server.notifyNewPlayer();
+
     }
 
     public void update(float delta, OrthographicCamera camera) {

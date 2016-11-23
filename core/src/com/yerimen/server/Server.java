@@ -5,7 +5,6 @@ import com.yerimen.json.PowerJsonBuilder;
 import com.yerimen.players.Character;
 import com.yerimen.players.Player;
 import com.yerimen.players.PlayerFactory;
-import com.yerimen.powers.FireBall;
 import com.yerimen.powers.Power;
 import com.yerimen.powers.PowerFactory;
 import com.yerimen.powers.PowerType;
@@ -19,7 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Server implements Observer {
 
@@ -48,21 +46,21 @@ public class Server implements Observer {
     private void configSocketEvents() {
         socket
                 .on("getStartedInfo", this::getStartedInfo)
-                .on("newPlayer", this::newPlayer)
+                .on("registerNewPlayer", this::registerNewPlayer)
                 .on("playerDisconnected", this::playerDisconnected)
                 .on("playerMoved", this::playerMoved)
                 .on("playerAttack", this::playerAttack);
     }
 
 
-    private void newPlayer(Object[] args) {
+    private void registerNewPlayer(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String newCharacterID = data.getString("characterID");
-            String newCharacterSelected = data.getString("characterSelected");
+            String id = data.getString("id");
+            String character = data.getString("character");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
-            gameContent.addEnemy(newCharacterID, new Vector2(x.floatValue(), y.floatValue()), newCharacterSelected);
+            gameContent.addEnemy(id, new Vector2(x.floatValue(), y.floatValue()), character);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -71,7 +69,7 @@ public class Server implements Observer {
     private void playerDisconnected(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String characterID = data.getString("characterID");
+            String characterID = data.getString("id");
             gameContent.removeEnemy(characterID);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Remove Character Error");
@@ -85,10 +83,9 @@ public class Server implements Observer {
             for (int i = 0; i < args.length(); i++) {
                 float x = ((Double) args.getJSONObject(i).getDouble("x")).floatValue();
                 float y = ((Double) args.getJSONObject(i).getDouble("y")).floatValue();
-                String name = args.getJSONObject(i).getString("name");
-                String id = args.getJSONObject(i).getString("characterID");
+                String name = args.getJSONObject(i).getString("character");
+                String id = args.getJSONObject(i).getString("id");
                 enemies.put(id, PlayerFactory.getCharacter(id,new Vector2(x,y),name));
-               // cn.addEnemy(args.getJSONObject(i).getString("characterID"), new Vector2(x, y), name);
             }
             return enemies;
         } catch (JSONException e) {
@@ -119,9 +116,9 @@ public class Server implements Observer {
     private void getStartedInfo(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String id = data.getString("socketID");
-            float x =(float) data.getDouble("positionX");
-            float y = (float)data.getDouble("positionY");
+            String id = data.getString("id");
+            float x =(float) data.getDouble("x");
+            float y = (float)data.getDouble("y");
 
             Player mainPlayer = new Player(id, userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
             mainPlayer.addObserver(this);
@@ -131,8 +128,8 @@ public class Server implements Observer {
         }
     }
 
-    public void notifyNewPlayer(){
-        socket.emit("notifyNewPlayer", this.getMainPlayerSelected());
+    public void notifyMyLogin(){
+        socket.emit("addNewPlayer", this.getMainPlayerSelected());
     }
 
     public void update(JSONObject jsonObject) {
@@ -151,9 +148,8 @@ public class Server implements Observer {
     public JSONObject getMainPlayerSelected() {
         JSONObject data = new JSONObject();
         try {
-            data.put("name", this.gameContent.getMainPlayer().getName());
-            data.put("x", this.gameContent.getMainPlayer().getXPosition());
-            data.put("y", this.gameContent.getMainPlayer().getYPosition());
+            data.put("name", this.userInformation.getUsername());
+            data.put("character", this.userInformation.getCharacter());
             return data;
         } catch (Exception e) {
             throw new RuntimeException("Error - Json");

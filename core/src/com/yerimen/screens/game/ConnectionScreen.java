@@ -8,8 +8,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.yerimen.players.Character;
 import com.yerimen.players.Player;
 import com.yerimen.powers.Power;
-import com.yerimen.screens.GameStateManager;
-import com.yerimen.screens.State;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
 import com.yerimen.server.Server;
 import com.yerimen.textures.TextureManager;
 import com.yerimen.user.UserInformation;
@@ -17,18 +17,18 @@ import com.yerimen.user.UserInformation;
 import java.util.HashMap;
 import java.util.List;
 
-public class ConnectionScreen extends State {
+public class ConnectionScreen extends YerimenScreen {
     private Server server;
     private Texture background;
     private Player player;
     private HashMap<String, Character> enemies;
     private List<Power> powers;
 
-    public ConnectionScreen(GameStateManager gsm, String serverUrl, UserInformation userInformation) {
+    public ConnectionScreen(ScreenManager gsm, String serverUrl, UserInformation userInformation) {
         super(gsm);
         this.server = new Server(serverUrl, userInformation, this);
         this.background = TextureManager.getInstance().getConnectionBackground();
-       // this.server.connect();
+        this.server.notifyMyLogin();
     }
 
     @Override
@@ -39,7 +39,6 @@ public class ConnectionScreen extends State {
     @Override
     public void update(float delta) {
         if (player != null) {
-
             gsm.set(new GameScreen(gsm, server, player, enemies));
         }
     }

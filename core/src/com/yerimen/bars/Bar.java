@@ -22,7 +22,7 @@ public class Bar {
         positionY = y;
         totalWidth = width;
         totalHeight = height;
-        percentage = 100f;
+        percentage = width / 100f;
     }
 
     public void update(int width, float x, float y) {
