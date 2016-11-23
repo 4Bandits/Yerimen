@@ -12,10 +12,14 @@ server.listen(9000, function(){
 
 io.on('connection', function(socket){
 
-    var startedInfo = getStartedInfo(socket);
-    socket.emit('getStartedInfo', startedInfo);
-	//socket.emit('getEnemies', players);
 	//socket.emit('getPowers', powers);
+
+	socket.on('addNewPlayer', function(data){
+	    var info = getStartedInfo(socket);
+        socket.emit('getStartedInfo', info);
+	    addNewPlayer(socket, info.x, info.y, data.name, data.character);
+	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y});
+	});
 
 	socket.on('playerMoved', function(data){
 	    socket.broadcast.emit('playerMoved', data);
@@ -33,27 +37,21 @@ io.on('connection', function(socket){
 	});
 
 	socket.on('disconnect', function(){
-		socket.broadcast.emit('playerDisconnected', { characterID: socket.id });
+		socket.broadcast.emit('playerDisconnected', { id: socket.id });
 		log("Player with ID [" + socket.id + "] just logged out.");
 		removePlayer(socket.id);
 	});
-
-	socket.on('notifyNewPlayer', function(data){
-	    var name = data.name;
-	    addNewPlayer(socket, data.x, data.y, name);
-	    socket.broadcast.emit("newPlayer", { characterID: socket.id, characterSelected: name, x: data.x, y: data.y});
-	});
-
 });
 
 
-function Player(characterID, x, y, health, direction, name){
-    this.characterID = characterID;
+function Player(id, x, y, health, direction, name, character){
+    this.id = id;
     this.x = x;
     this.y = y;
     this.health = health;
     this.direction = direction;
     this.name = name;
+    this.character = character;
 };
 
 function log(comment){
@@ -65,8 +63,8 @@ function currentTimestamp() {
     return date.toLocaleTimeString()
 }
 
-function addNewPlayer(socket, x, y, name) {
-    players.push(new Player(socket.id, x,y, 100, 'right', name));
+function addNewPlayer(socket, x, y, name, character) {
+    players.push(new Player(socket.id, x,y, 100, 'right', name, character));
     log("Player with ID [" + socket.id + "] just logged in.");
 }
 
@@ -87,7 +85,7 @@ function removePlayer(playerID){
 
 function forPlayer(id, callback) {
     forEach(players, function(player, index) {
-        if(player.characterID == id){
+        if(player.id == id){
            callback(player, index);
         };
     });
@@ -102,9 +100,9 @@ function forEach(list, callback) {
 function getStartedInfo(socket){
     var vector2 = getDefaultPosition();
     return {
-                socketID: socket.id,
-                positionX: vector2.x,
-                positionY: vector2.y,
+                id: socket.id,
+                x: vector2.x,
+                y: vector2.y,
                 players,
                 powers
            }
@@ -118,17 +116,17 @@ function Vector2d(x, y){
 function getDefaultPosition(){
     var result;
     //todo implementar una forma dinamica
-    switch(players.length +1){
-        case 1:
+    switch(players.length){
+        case 0:
             result = new Vector2d(400, 400);
         break;
-        case 2:
+        case 1:
             result = new Vector2d(2900, 2900);
         break;
-        case 3:
+        case 2:
             result = new Vector2d(2900, 400);
         break;
-        case 4:
+        case 3:
             result = new Vector2d(400, 2900);
         break;
         default:
