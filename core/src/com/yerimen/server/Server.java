@@ -96,7 +96,7 @@ public class Server implements Observer {
     private void playerMoved(Object[] args) {
         JSONObject data = (JSONObject) args[0];
         try {
-            String characterID = data.getString("characterID");
+            String characterID = data.getString("id");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
             String direction = data.getString("direction");

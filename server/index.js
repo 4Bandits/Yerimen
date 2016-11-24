@@ -69,7 +69,7 @@ function addNewPlayer(socket, x, y, name, character) {
 }
 
 function updatePlayer(data){
-    forPlayer(data.characterID, function(player, index) {
+    forPlayer(data.id, function(player, index) {
        player.x = data.x;
        player.y = data.y;
        player.health = data.health;

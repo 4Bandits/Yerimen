@@ -95,7 +95,7 @@ public abstract class Power extends Sprite {
     }
 
     private Boolean isInCollisionWith(Character player) {
-        return !player.getCharacterID().contentEquals(this.getCharacterID()) && this.getBoundingRectangle().overlaps(player.getBounds());
+        return !player.getId().contentEquals(this.getCharacterID()) && this.getBoundingRectangle().overlaps(player.getBounds());
     }
 
     private void notifyCollision(GameContent gameContent) {
