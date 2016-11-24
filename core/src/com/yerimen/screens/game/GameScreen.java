@@ -1,27 +1,29 @@
 package com.yerimen.screens.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.yerimen.YerimenGame;
+import com.yerimen.players.Character;
+import com.yerimen.players.Player;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
+import com.yerimen.server.Server;
 
-public class GameScreen extends ScreenAdapter {
+import java.util.HashMap;
 
-    private YerimenGame game;
+public class GameScreen extends YerimenScreen {
+
     private GameContent gameContent;
     private GameHud gameHud;
-    private OrthographicCamera camera;
 
-    public GameScreen(YerimenGame game) {
+    public GameScreen(ScreenManager gsm, Server server, Player player, HashMap<String, Character> enemies) {
+        super(gsm);
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        this.game = game;
-        this.gameContent = new GameContent();
+        this.gameContent = new GameContent(player, server, enemies);
         this.gameHud = new GameHud();
-        this.game.connect(this.gameContent);
 
         this.initializeCamera();
     }
@@ -33,29 +35,33 @@ public class GameScreen extends ScreenAdapter {
     }
 
     @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    protected void handleInput() {
 
-        this.updateCamera();
-        this.game.setProjectionMatrix(camera.combined);
-        this.update(delta);
-        this.draw();
     }
 
-    private void update(float delta) {
+    public void update(float delta) {
         this.gameContent.update(delta, camera);
         this.updateCamera();
     }
 
-    private void draw() {
-        this.game.getBatch().begin();
-        this.gameContent.render(this.game.getBatch(), this.game.getShapeRenderer());
-        this.game.getBatch().end();
+    @Override
+    public void render(SpriteBatch sb, ShapeRenderer sr) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.updateCamera();
+        sb.setProjectionMatrix(camera.combined);
+        this.draw(sb, sr);
+    }
 
-        this.game.getHudBatch().begin();
-        this.gameHud.render(this.game.getHudBatch());
-        this.game.getHudBatch().end();
+    @Override
+    public void dispose() {
+
+    }
+
+    private void draw(SpriteBatch sb, ShapeRenderer sr) {
+        sb.begin();
+        this.gameContent.render(sb, sr);
+        this.gameHud.render(sb);
+        sb.end();
     }
 
     private void updateCamera() {
@@ -65,5 +71,4 @@ public class GameScreen extends ScreenAdapter {
         camera.position.set(x, y, 0);
         camera.update();
     }
-
 }

@@ -1,12 +1,13 @@
 package com.yerimen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
+import com.yerimen.screens.ScreenManager;
 import com.yerimen.screens.game.GameContent;
 import com.yerimen.screens.mainMenu.MainMenuScreen;
-import com.yerimen.server.Server;
 import com.yerimen.textures.TextureManager;
 import com.yerimen.user.UserInformation;
 
@@ -14,8 +15,8 @@ public class YerimenGame extends Game {
 
 	private SpriteBatch batch;
 	private SpriteBatch hudBatch;
-	private Server server;
 	private ShapeRenderer shapeRenderer;
+	private ScreenManager gsm;
 
 	@Override
 	public void create () {
@@ -23,13 +24,16 @@ public class YerimenGame extends Game {
 		this.batch = new SpriteBatch();
 		this.hudBatch = new SpriteBatch();
 		this.shapeRenderer = new ShapeRenderer();
-		this.server = new Server();
-		this.setScreen(new MainMenuScreen(this));
+		gsm = new ScreenManager();
+		gsm.push(new MainMenuScreen(gsm));
+		//this.setScreen(new MainMenuScreen(this));
 	}
 
 	@Override
 	public void render () {
-		super.render();
+		gsm.update(Gdx.graphics.getDeltaTime());
+		gsm.render(batch, shapeRenderer);
+		//super.render();
 	}
 
 	public SpriteBatch getBatch(){
@@ -47,10 +51,10 @@ public class YerimenGame extends Game {
     }
 
 	public void attemptConnectionTo(String serverUrl, UserInformation userInformation) {
-		this.server.attemptConnectionTo(serverUrl, userInformation);
+		//this.server.attemptConnectionTo(serverUrl, userInformation);
 	}
 
 	public void connect(GameContent gameContent) {
-		this.server.connect(gameContent);
+		//this.server.connect(gameContent);
 	}
 }

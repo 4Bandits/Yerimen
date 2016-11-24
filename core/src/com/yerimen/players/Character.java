@@ -39,7 +39,7 @@ public class Character {
         this.respawndPoint = position;
     }
 
-    public String getCharacterID() {
+    public String getId() {
         return characterID;
     }
 
@@ -100,10 +100,6 @@ public class Character {
 
     public float getYPosition() {
         return sprite.getY();
-    }
-
-    public void setCharacterID(String characterID) {
-        this.characterID = characterID;
     }
 
     JSONObject toJson() {

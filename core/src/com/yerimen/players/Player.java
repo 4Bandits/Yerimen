@@ -85,12 +85,12 @@ public class Player extends Character implements Observable {
     private void attack(Vector3 vector3) {
         Vector2 vector2 = new Vector2(vector3.x, vector3.y);
         Float distance = this.getPosition().dst(vector2);
-        Power power = PowerFactory.getPower(this.getCharacterID(), this.getAttackID(), distance, vector2, this.getPosition(), this.power.getType());
+        Power power = PowerFactory.getPower(this.getId(), this.getAttackID(), distance, vector2, this.getPosition(), this.power.getType());
         this.notify(power);
     }
 
     private String getAttackID() {
-        return this.getCharacterID() + this.getNextInt();
+        return this.getId() + this.getNextInt();
     }
 
     private String getNextInt() {

@@ -1,14 +1,17 @@
 package com.yerimen.screens.mainMenu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.yerimen.YerimenGame;
-import com.yerimen.screens.game.GameScreen;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
+import com.yerimen.screens.game.ConnectionScreen;
 import com.yerimen.user.UserInformation;
 
-public class MainMenuContent {
+public class MainMenuContent  extends YerimenScreen {
 
     private Table table;
     private Label usernameLabel;
@@ -24,11 +27,12 @@ public class MainMenuContent {
     private ButtonGroup characterOptions;
     private Label serverErrorMessage;
 
-    public MainMenuContent(YerimenGame game) {
+    public MainMenuContent(ScreenManager gsm) {
+        super(gsm);
         Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
 
         this.initializeTable();
-        this.initializeGameButton(game, skin);
+        this.initializeGameButton(skin);
         this.initializeUsernameInput(skin);
         this.initializeServerUrlInput(skin);
         this.initializeCharacterSelection(skin);
@@ -38,6 +42,26 @@ public class MainMenuContent {
         this.serverErrorMessage = new Label("Connection to the Server failed. Check the URL and try again.", skin);
 
         this.drawInTable();
+    }
+
+    @Override
+    protected void handleInput() {
+
+    }
+
+    @Override
+    public void update(float delta) {
+
+    }
+
+    @Override
+    public void render(SpriteBatch sb, ShapeRenderer sr) {
+
+    }
+
+    @Override
+    public void dispose() {
+
     }
 
     public Table getContent() {
@@ -68,10 +92,10 @@ public class MainMenuContent {
         this.table.setFillParent(true);
     }
 
-    private void initializeGameButton(YerimenGame game, Skin skin) {
+    private void initializeGameButton( Skin skin) {
         this.startGameButton = new TextButton("Connect!", skin);
         this.startGameButton.setDisabled(true);
-        this.startGameButton.addListener(startGameButtonListener(game));
+        this.startGameButton.addListener(startGameButtonListener());
     }
 
     private void initializeCharacterSelection(Skin skin) {
@@ -106,15 +130,14 @@ public class MainMenuContent {
         };
     }
 
-    private ChangeListener startGameButtonListener(YerimenGame game) {
+    private ChangeListener startGameButtonListener() {
         return new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 UserInformation userInformation = new UserInformation(usernameToUse(), characterToUse());
 
                 try {
-                    game.attemptConnectionTo(serverUrlToConnect(), userInformation);
-                    game.setScreen(new GameScreen(game));
+                    gsm.set(new ConnectionScreen(gsm, serverUrlToConnect(), userInformation));
                 } catch (RuntimeException exception) {
                     table.row().space(10);
                     table.add(serverErrorMessage).uniform().colspan(3);

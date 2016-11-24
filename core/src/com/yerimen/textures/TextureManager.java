@@ -24,11 +24,13 @@ public class TextureManager {
     private Texture health;
     private Texture healthContainer;
     private Texture iceBall;
+    private Texture connectionBackground;
 
     private TextureManager(){
         initializePlayerTextures();
         initializePowers();
         initializeBars();
+        connectionBackground = new Texture("images/loading.png");
     }
 
     private void initializePowers() {
@@ -125,5 +127,7 @@ public class TextureManager {
     public Texture getIceBall() { return iceBall; }
 
 
-
+    public Texture getConnectionBackground() {
+        return connectionBackground;
+    }
 }

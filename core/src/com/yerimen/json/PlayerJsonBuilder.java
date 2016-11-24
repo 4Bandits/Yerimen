@@ -5,7 +5,7 @@ import org.json.JSONObject;
 
 public class PlayerJsonBuilder {
 
-    private String characterID;
+    private String id;
     private float x;
     private float y;
     private int health;
@@ -13,7 +13,7 @@ public class PlayerJsonBuilder {
     private String name;
 
     public PlayerJsonBuilder(Character player){
-        characterID = player.getCharacterID();
+        id = player.getId();
         x = player.getXPosition();
         y = player.getYPosition();
         health = player.getStatus().getHp();
@@ -24,7 +24,7 @@ public class PlayerJsonBuilder {
     public JSONObject build(){
         JSONObject data = new JSONObject();
         try {
-            data.put("characterID", characterID);
+            data.put("id", id);
             data.put("x", x);
             data.put("y", y);
             data.put("health", health);

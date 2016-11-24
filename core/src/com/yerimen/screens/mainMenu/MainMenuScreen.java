@@ -1,23 +1,24 @@
 package com.yerimen.screens.mainMenu;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.yerimen.YerimenGame;
+import com.yerimen.screens.ScreenManager;
+import com.yerimen.screens.YerimenScreen;
 
-public class MainMenuScreen extends ScreenAdapter {
+public class MainMenuScreen extends YerimenScreen {
 
-    private YerimenGame game;
     private MainMenuContent content;
     private OrthographicCamera camera;
     private Stage stage;
 
-    public MainMenuScreen(YerimenGame game) {
+    public MainMenuScreen(ScreenManager gsm) {
+        super(gsm);
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        this.game = game;
-        this.content = new MainMenuContent(game);
+        this.content = new MainMenuContent(gsm);
         this.initializeCamera();
         this.stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -27,21 +28,36 @@ public class MainMenuScreen extends ScreenAdapter {
     }
 
     @Override
-    public void render(float delta) {
+    public void render(SpriteBatch sb, ShapeRenderer sr) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         this.stage.act();
         this.stage.draw();
     }
-
+/*
     @Override
     public void resize(int width, int height) {
         this.stage.getViewport().update(width, height, false);
     }
-
+*/
     private void initializeCamera(){
         this.camera = new OrthographicCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.update();
     }
 
+    @Override
+    protected void handleInput() {
+
+    }
+
+    @Override
+    public void update(float delta) {
+
+    }
+
+
+    @Override
+    public void dispose() {
+
+    }
 }

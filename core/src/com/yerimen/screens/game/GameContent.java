@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.yerimen.level.Level;
 import com.yerimen.level.MiniMap;
 import com.yerimen.players.Character;
-import com.yerimen.players.CharacterStatus;
 import com.yerimen.players.Player;
 import com.yerimen.players.PlayerFactory;
 import com.yerimen.powers.Power;
@@ -28,11 +27,15 @@ public class GameContent {
     private List<Power> powers;
     private MiniMap miniMap;
 
-    public GameContent() {
+    public GameContent(Player player, Server server, HashMap<String, Character> enemies) {
+        this.mainPlayer = player;
         this.level = new Level(TextureManager.getInstance().getGrass());
-        this.enemies = new HashMap<>();
+        this.enemies = enemies;
         this.powers = new ArrayList<>();
         this.miniMap = new MiniMap();
+
+        server.setGameContent(this);
+
     }
 
     public void update(float delta, OrthographicCamera camera) {
@@ -48,10 +51,6 @@ public class GameContent {
         this.getPowers().forEach(power -> power.render(batch));
         mainPlayer.render(batch, shapeRenderer, Color.BLUE);
         this.miniMap.render(batch,shapeRenderer);
-    }
-
-    public void setMainPlayer(Player mainPlayer) {
-        this.mainPlayer = mainPlayer;
     }
 
     public Player getMainPlayer() {

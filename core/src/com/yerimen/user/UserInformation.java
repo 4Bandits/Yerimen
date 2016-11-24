@@ -18,6 +18,10 @@ public class UserInformation {
         return username;
     }
 
+    public String getCharacter() {
+        return character;
+    }
+
     public PlayerTexture getPlayerTexture() {
         switch (this.character) {
             case "Werewolf":
