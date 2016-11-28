@@ -115,23 +115,16 @@ function Vector2d(x, y){
 
 function getDefaultPosition(){
     var result;
-    //todo implementar una forma dinamica
-    switch(players.length){
-        case 0:
-            result = new Vector2d(400, 400);
-        break;
-        case 1:
-            result = new Vector2d(2900, 2900);
-        break;
-        case 2:
-            result = new Vector2d(2900, 400);
-        break;
-        case 3:
-            result = new Vector2d(400, 2900);
-        break;
-        default:
-        result = new Vector2d(1500, 1500);
-        break
+    var distance = parseInt(players.length * 20 );
+    if(isOdd(players.length)){
+        result = new Vector2d(2800 + distance, 2900);
+    }
+    else{
+        result = new Vector2d(400 + distance, 400);
     }
     return result;
+}
+
+function isOdd(n) {
+   return n % 2 == 1;
 }
