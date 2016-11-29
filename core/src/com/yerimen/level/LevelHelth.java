@@ -3,10 +3,9 @@ package com.yerimen.level;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.yerimen.players.Character;
+import com.yerimen.players.Player;
 
 public class LevelHelth extends LevelElement implements ICollisionable {
 
@@ -26,6 +25,11 @@ public class LevelHelth extends LevelElement implements ICollisionable {
 
     @Override
     public boolean isInCollision(Rectangle bounds) {
-        return false;
+        return this.sprite.getBoundingRectangle().overlaps(bounds);
+    }
+
+    @Override
+    public void crashed(Player mainPlayer) {
+        mainPlayer.increaseLife(1);
     }
 }

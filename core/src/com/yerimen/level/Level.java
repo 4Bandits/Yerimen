@@ -24,14 +24,10 @@ public class Level {
                 matrix[i][j].setPosition(i * 64, j * 64);
             }
         }
+        //added health places
+        collisionables.add(new LevelHelth(healthTexture,150,150));
+        collisionables.add(new LevelHelth(healthTexture,2900,2900));
 
-      //  for (int i = 0; i < 10; i++){
-            
-          //  matrix[10][10] = new Sprite(health);
-           // matrix[10][10].setPosition(10* 64, 10* 64);
-
-            collisionables.add(new LevelHelth(healthTexture,150,150));
-//        }
 
     }
 

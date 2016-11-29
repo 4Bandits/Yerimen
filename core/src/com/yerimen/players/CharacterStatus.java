@@ -51,10 +51,15 @@ public class CharacterStatus {
     }
 
     public int subtractHp(int value) {
-        return hp-= value;
+        return hp -= value;
     }
 
-    public void respawnd(){
+    public CharacterStatus increaseHp(int value) {
+        hp += value;
+        return this;
+    }
+
+    public void respawnd() {
         hp = 100;
     }
 

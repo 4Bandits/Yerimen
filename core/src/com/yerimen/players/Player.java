@@ -20,13 +20,14 @@ public class Player extends Character implements Observable {
     private int currentSpeed;
     private Power power;
     public Vector2 previousPost;
+
     public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
         super(characterID, playerTexture, playerStatus, position);
         this.nextInt = 0;
         this.currentSpeed = 1;
         this.power = power;
         this.cooldown = power.getCooldown();
-        this.previousPost = new Vector2(position.x, position.y) ;
+        this.previousPost = new Vector2(position.x, position.y);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class Player extends Character implements Observable {
         healthBar.update(getStatus().getHp(), getXPosition(), getYPosition() + 70);
     }
 
-    private void processSelectPower(){
+    private void processSelectPower() {
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1) || Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
             this.setPower(PowerFactory.getPower(PowerType.Fireball));
         }
@@ -65,7 +66,7 @@ public class Player extends Character implements Observable {
 
     private void processMove() {
         this.currentSpeed = 1;
-        this.previousPost.set(getXPosition(),getYPosition());
+        this.previousPost.set(getXPosition(), getYPosition());
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             this.currentSpeed = 4;
         }
@@ -112,7 +113,7 @@ public class Player extends Character implements Observable {
 
     public void setPosition(float x, float y) {
         this.sprite.setPosition(x, y);
-        this.respawndPoint.set(x,y);
+        this.respawndPoint.set(x, y);
     }
 
     private void translate(int x, int y, String direction, Animation animation) {
@@ -126,4 +127,8 @@ public class Player extends Character implements Observable {
         return this;
     }
 
+    public void increaseLife(int value) {
+        if (getStatus().getHp() < 100)
+            getStatus().increaseHp(value);
+    }
 }

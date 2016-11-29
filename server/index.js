@@ -117,7 +117,7 @@ function getDefaultPosition(){
     var result;
     var distance = parseInt(players.length * 20 );
     if(isOdd(players.length)){
-        result = new Vector2d(2800 + distance, 2900);
+        result = new Vector2d(2700 + distance, 2700);
     }
     else{
         result = new Vector2d(400 + distance, 400);

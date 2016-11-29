@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.level.ICollisionable;
 import com.yerimen.level.Level;
+import com.yerimen.level.LevelElement;
 import com.yerimen.level.MiniMap;
 import com.yerimen.players.Character;
 import com.yerimen.players.Player;
@@ -48,7 +49,8 @@ public class GameContent {
         Rectangle r = mainPlayer.getBounds();
         for (ICollisionable s : level.collisionables) {
             if(s.isInCollision(r)){
-                mainPlayer.setPosition(mainPlayer.previousPost.x,mainPlayer.previousPost.y);
+                s.crashed(mainPlayer);
+                //mainPlayer.setPosition(mainPlayer.previousPost.x,mainPlayer.previousPost.y);
             }
         }
     }

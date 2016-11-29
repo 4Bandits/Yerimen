@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.json.PowerJsonBuilder;
+import com.yerimen.level.ICollisionable;
 import com.yerimen.players.Character;
 import com.yerimen.screens.game.GameContent;
 import org.json.JSONObject;
@@ -87,14 +88,14 @@ public abstract class Power extends Sprite {
 
     private void detectCollision(List<Character> players, GameContent gameContent) {
         for (Character player : players) {
-            if (this.isInCollisionWith(player)) {
+            if (this.isInCollision(player)) {
                 this.notifyCollision(gameContent);
                 player.isAttacked(this.damage);
             }
         }
     }
 
-    private Boolean isInCollisionWith(Character player) {
+    public boolean isInCollision(Character player) {
         return !player.getId().contentEquals(this.getCharacterID()) && this.getBoundingRectangle().overlaps(player.getBounds());
     }
 
