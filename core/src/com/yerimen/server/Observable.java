@@ -24,6 +24,8 @@ public interface Observable {
 
     default void notify(Power power){ this.observers.forEach(observer -> observer.update(power)); }
 
+    default void notifyKill(){ this.observers.forEach(observer -> observer.updateKill()); }
+
 }
 
 

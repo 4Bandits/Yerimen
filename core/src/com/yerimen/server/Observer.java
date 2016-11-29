@@ -7,5 +7,6 @@ public interface Observer {
 
     void update(JSONObject jsonObject);
     void update(Power power);
+    void updateKill();
 
 }

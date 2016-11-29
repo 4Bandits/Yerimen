@@ -125,4 +125,8 @@ public class Player extends Character implements Observable {
         return this;
     }
 
+    public void onDead() {
+        this.notifyKill();
+    }
+
 }
