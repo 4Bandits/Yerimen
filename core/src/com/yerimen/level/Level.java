@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.yerimen.textures.TextureManager;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class Level {
 
@@ -15,7 +14,7 @@ public class Level {
     public ArrayList<LevelElement> collisionables;
     public Level(Texture texture) {
         collisionables = new ArrayList<>();
-        Texture rock = TextureManager.getInstance().getRock();
+        Texture wallTexture = TextureManager.getInstance().getWall();
         Texture healthTexture = TextureManager.getInstance().getHealthPlace();
 
         for (int i = 0; i < 50; i++) {
@@ -28,7 +27,13 @@ public class Level {
         collisionables.add(new LevelHelth(healthTexture,150,150));
         collisionables.add(new LevelHelth(healthTexture,2900,2900));
 
-
+        //add some walls
+        collisionables.add(new LevelWall(wallTexture, 300,600));
+        collisionables.add(new LevelWall(wallTexture, 364,600));
+        collisionables.add(new LevelWall(wallTexture, 428,600));
+        collisionables.add(new LevelWall(wallTexture, 500,600));
+        collisionables.add(new LevelWall(wallTexture, 564,600));
+        collisionables.add(new LevelWall(wallTexture, 628,600));
     }
 
     public void render(SpriteBatch batch) {

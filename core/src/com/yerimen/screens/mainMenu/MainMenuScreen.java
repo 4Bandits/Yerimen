@@ -15,35 +15,26 @@ public class MainMenuScreen extends YerimenScreen {
     private OrthographicCamera camera;
     private Stage stage;
 
-    public MainMenuScreen(ScreenManager gsm) {
-        super(gsm);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        this.content = new MainMenuContent(gsm);
-        this.initializeCamera();
-        this.stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+    public MainMenuScreen(ScreenManager gameScreenManager) {
+        super(gameScreenManager);
+        this.content = new MainMenuContent(gameScreenManager);
 
-        this.stage.addActor(new Background());
-        this.stage.addActor(this.content.getContent());
+        this.initializeCamera();
+        this.initializeStage();
     }
 
     @Override
-    public void render(SpriteBatch sb, ShapeRenderer sr) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void render(SpriteBatch spriteBatch, SpriteBatch hudBatch, ShapeRenderer shapeRenderer) {
         this.stage.act();
         this.stage.draw();
     }
-/*
+
+    /*
     @Override
     public void resize(int width, int height) {
         this.stage.getViewport().update(width, height, false);
     }
-*/
-    private void initializeCamera(){
-        this.camera = new OrthographicCamera();
-        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        this.camera.update();
-    }
+    */
 
     @Override
     protected void handleInput() {
@@ -55,9 +46,23 @@ public class MainMenuScreen extends YerimenScreen {
 
     }
 
-
     @Override
     public void dispose() {
-
+        this.stage.dispose();
     }
+
+    private void initializeCamera(){
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        this.camera.update();
+    }
+
+    private void initializeStage() {
+        this.stage = new Stage();
+
+        Gdx.input.setInputProcessor(stage);
+        this.stage.addActor(new Background());
+        this.stage.addActor(this.content.getContent());
+    }
+
 }

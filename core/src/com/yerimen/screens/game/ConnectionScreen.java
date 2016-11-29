@@ -1,7 +1,5 @@
 package com.yerimen.screens.game;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -24,8 +22,8 @@ public class ConnectionScreen extends YerimenScreen {
     private HashMap<String, Character> enemies;
     private List<Power> powers;
 
-    public ConnectionScreen(ScreenManager gsm, String serverUrl, UserInformation userInformation) {
-        super(gsm);
+    public ConnectionScreen(ScreenManager gameScreenManager, String serverUrl, UserInformation userInformation) {
+        super(gameScreenManager);
         this.server = new Server(serverUrl, userInformation, this);
         this.background = TextureManager.getInstance().getConnectionBackground();
         this.server.notifyMyLogin();
@@ -39,22 +37,20 @@ public class ConnectionScreen extends YerimenScreen {
     @Override
     public void update(float delta) {
         if (player != null) {
-            gsm.set(new GameScreen(gsm, server, player, enemies));
+            gameScreenManager.set(new GameScreen(gameScreenManager, server, player, enemies));
         }
     }
 
-    public void SetPlayer(Player player, HashMap<String, Character> players){
+    public void setPlayer(Player player, HashMap<String, Character> players){
         this.enemies = players;
         this.player = player;
     }
 
     @Override
-    public void render(SpriteBatch sb, ShapeRenderer sr) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        sb.begin();
-        sb.draw(this.background, 0, 0);
-        sb.end();
+    public void render(SpriteBatch spriteBatch, SpriteBatch hudBatch, ShapeRenderer shapeRenderer) {
+        spriteBatch.begin();
+        spriteBatch.draw(this.background, 0, 0);
+        spriteBatch.end();
     }
 
     @Override

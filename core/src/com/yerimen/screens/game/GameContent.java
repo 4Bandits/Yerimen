@@ -50,7 +50,6 @@ public class GameContent {
         for (ICollisionable s : level.collisionables) {
             if(s.isInCollision(r)){
                 s.crashed(mainPlayer);
-                //mainPlayer.setPosition(mainPlayer.previousPost.x,mainPlayer.previousPost.y);
             }
         }
     }
@@ -76,10 +75,10 @@ public class GameContent {
         enemies.remove(enemyId);
     }
 
-    public void moveEnemy(String enemyId, float x, float y, String direction) {
+    public void updateCharacter(String enemyId, float x, float y, String direction, int health) {
         Character enemy = enemies.get(enemyId);
         if (enemy != null)
-            enemy.move(x, y).setDirection(direction).setMoving(true);
+            enemy.move(x, y).setDirection(direction).setMoving(true).setHealth(health);
     }
 
     public List<Character> getEnemies() {

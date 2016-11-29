@@ -63,4 +63,7 @@ public class CharacterStatus {
         hp = 100;
     }
 
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 }

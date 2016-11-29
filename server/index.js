@@ -14,6 +14,10 @@ io.on('connection', function(socket){
 
 	//socket.emit('getPowers', powers);
 
+    socket.on('showNotification', function(notification) {
+        socket.broadcast.emit('showNotification', notification);
+    });
+
 	socket.on('addNewPlayer', function(data){
 	    var info = getStartedInfo(socket);
         socket.emit('getStartedInfo', info);

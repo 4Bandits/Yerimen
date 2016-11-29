@@ -21,7 +21,7 @@ public class TextureManager {
     private CharacterStatus rockmanStatus;
     private Texture fireBall;
     private Texture grass;
-    private Texture rock;
+    private Texture wall;
     private Texture healthPlace;
     private Texture health;
     private Texture healthContainer;
@@ -33,7 +33,7 @@ public class TextureManager {
         initializePowers();
         initializeBars();
         connectionBackground = new Texture("images/loading.png");
-        rock = new Texture("images/rock.png");
+        wall = new Texture("images/wall.png");
         healthPlace = new Texture("images/health.png");
     }
 
@@ -120,8 +120,8 @@ public class TextureManager {
     public Texture getGrass() {
         return grass;
     }
-    public Texture getRock() {
-        return rock;
+    public Texture getWall() {
+        return wall;
     }
     public Texture getHealthPlace() {
         return healthPlace;

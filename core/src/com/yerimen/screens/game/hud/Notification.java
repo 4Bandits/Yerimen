@@ -28,10 +28,6 @@ public class Notification {
         this.position = new Vector2(middleScreenWidth(), middleScreenHeight());
     }
 
-    public void shutdown() {
-        this.alpha = 0;
-    }
-
     public boolean isOnScreen() {
         return this.alpha > 0;
     }
@@ -39,7 +35,7 @@ public class Notification {
     public void render(SpriteBatch spriteBatch) {
         if(this.alpha > 0) {
             this.bitmap.setColor(1, 1, 1, alpha);
-            this.bitmap.draw(spriteBatch, this.content, this.middleScreenWidth(), this.middleScreenHeight());
+            this.bitmap.draw(spriteBatch, this.content, this.position.x, this.position.y);
             this.alpha -= 0.005;
         }
     }

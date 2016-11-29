@@ -11,8 +11,10 @@ import com.yerimen.screens.YerimenScreen;
 import com.yerimen.screens.game.ConnectionScreen;
 import com.yerimen.user.UserInformation;
 
-public class MainMenuContent  extends YerimenScreen {
+public class MainMenuContent {
 
+    private Skin skin;
+    private ScreenManager gameScreenManager;
     private Table table;
     private Label usernameLabel;
     private TextField usernameInput;
@@ -27,41 +29,22 @@ public class MainMenuContent  extends YerimenScreen {
     private ButtonGroup characterOptions;
     private Label serverErrorMessage;
 
-    public MainMenuContent(ScreenManager gsm) {
-        super(gsm);
-        Skin skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+    public MainMenuContent(ScreenManager gameScreenManager) {
+        this.skin = new Skin(Gdx.files.internal("ui/uiskin.json"));
+        this.gameScreenManager = gameScreenManager;
 
         this.initializeTable();
-        this.initializeGameButton(skin);
-        this.initializeUsernameInput(skin);
-        this.initializeServerUrlInput(skin);
-        this.initializeCharacterSelection(skin);
-        this.usernameLabel = new Label("Username", skin);
-        this.serverUrlLabel = new Label("Server URL", skin);
-        this.characterLabel = new Label("Select your character", skin);
-        this.serverErrorMessage = new Label("Connection to the Server failed. Check the URL and try again.", skin);
+        this.initializeGameButton();
+        this.initializeUsernameInput();
+        this.initializeServerUrlInput();
+        this.initializeCharacterSelection();
+
+        this.usernameLabel = new Label("Username", this.skin);
+        this.serverUrlLabel = new Label("Server URL", this.skin);
+        this.characterLabel = new Label("Select your character", this.skin);
+        this.serverErrorMessage = new Label("Connection to the Server failed. Check the URL and try again.", this.skin);
 
         this.drawInTable();
-    }
-
-    @Override
-    protected void handleInput() {
-
-    }
-
-    @Override
-    public void update(float delta) {
-
-    }
-
-    @Override
-    public void render(SpriteBatch sb, ShapeRenderer sr) {
-
-    }
-
-    @Override
-    public void dispose() {
-
     }
 
     public Table getContent() {
@@ -92,28 +75,28 @@ public class MainMenuContent  extends YerimenScreen {
         this.table.setFillParent(true);
     }
 
-    private void initializeGameButton( Skin skin) {
-        this.startGameButton = new TextButton("Connect!", skin);
+    private void initializeGameButton() {
+        this.startGameButton = new TextButton("Connect!", this.skin);
         this.startGameButton.setDisabled(true);
         this.startGameButton.addListener(startGameButtonListener());
     }
 
-    private void initializeCharacterSelection(Skin skin) {
-        this.werewolfOption = new CheckBox("Werewolf", skin);
-        this.vampireOption = new CheckBox("Vampire", skin);
-        this.wizardOption = new CheckBox("Wizard", skin);
-        this.rockmanOption = new CheckBox("Rockman", skin);
+    private void initializeCharacterSelection() {
+        this.werewolfOption = new CheckBox("Werewolf", this.skin);
+        this.vampireOption = new CheckBox("Vampire", this.skin);
+        this.wizardOption = new CheckBox("Wizard", this.skin);
+        this.rockmanOption = new CheckBox("Rockman", this.skin);
         this.characterOptions = new ButtonGroup(this.vampireOption, this.werewolfOption, this.wizardOption, this.rockmanOption);
         this.characterOptions.setChecked("Werewolf");
     }
 
-    private void initializeUsernameInput(Skin skin) {
-        this.usernameInput = new TextField("", skin);
+    private void initializeUsernameInput() {
+        this.usernameInput = new TextField("", this.skin);
         this.usernameInput.addListener(inputListener());
     }
 
-    private void initializeServerUrlInput(Skin skin) {
-        this.serverUrlInput = new TextField("http://localhost:9000", skin);
+    private void initializeServerUrlInput() {
+        this.serverUrlInput = new TextField("http://localhost:9000", this.skin);
         this.serverUrlInput.addListener(inputListener());
     }
 
@@ -135,9 +118,8 @@ public class MainMenuContent  extends YerimenScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 UserInformation userInformation = new UserInformation(usernameToUse(), characterToUse());
-
                 try {
-                    gsm.set(new ConnectionScreen(gsm, serverUrlToConnect(), userInformation));
+                    gameScreenManager.set(new ConnectionScreen(gameScreenManager, serverUrlToConnect(), userInformation));
                 } catch (RuntimeException exception) {
                     table.row().space(10);
                     table.add(serverErrorMessage).uniform().colspan(3);

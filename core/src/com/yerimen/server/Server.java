@@ -10,6 +10,7 @@ import com.yerimen.powers.PowerFactory;
 import com.yerimen.powers.PowerType;
 import com.yerimen.screens.game.ConnectionScreen;
 import com.yerimen.screens.game.GameContent;
+import com.yerimen.screens.game.GameHud;
 import com.yerimen.user.UserInformation;
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -24,21 +25,22 @@ public class Server implements Observer {
     private UserInformation userInformation;
     private Socket socket;
     private GameContent gameContent;
-    private ConnectionScreen cn;
+    private GameHud gameHud;
+    private ConnectionScreen connectionScreen;
 
-    public Server(String serverUrl, UserInformation userInformation, ConnectionScreen cn) {
+    public Server(String serverUrl, UserInformation userInformation, ConnectionScreen connectionScreen) {
         try {
             this.socket = IO.socket(serverUrl);
             this.configSocketEvents();
             this.socket.connect();
             this.userInformation = userInformation;
-            this.cn = cn;
+            this.connectionScreen = connectionScreen;
         } catch (Exception e) {
             throw new RuntimeException("Connection Error!");
         }
     }
 
-    public void setGameContent(GameContent gameContent){
+    public void setGameContent(GameContent gameContent) {
         this.gameContent = gameContent;
         gameContent.setServer(this);
     }
@@ -49,9 +51,19 @@ public class Server implements Observer {
                 .on("registerNewPlayer", this::registerNewPlayer)
                 .on("playerDisconnected", this::playerDisconnected)
                 .on("playerMoved", this::playerMoved)
-                .on("playerAttack", this::playerAttack);
+                .on("playerAttack", this::playerAttack)
+                .on("showNotification", this::showNotification);
     }
 
+    private void showNotification(Object[] args) {
+        JSONObject data = (JSONObject) args[0];
+        try {
+            String notification = data.getString("notification");
+            this.gameHud.showNotification(notification);
+        } catch (JSONException e) {
+            throw new RuntimeException("SocketIO - Showing Notification Error");
+        }
+    }
 
     private void registerNewPlayer(Object[] args) {
         JSONObject data = (JSONObject) args[0];
@@ -85,7 +97,7 @@ public class Server implements Observer {
                 float y = ((Double) args.getJSONObject(i).getDouble("y")).floatValue();
                 String name = args.getJSONObject(i).getString("character");
                 String id = args.getJSONObject(i).getString("id");
-                enemies.put(id, PlayerFactory.getCharacter(id,new Vector2(x,y),name));
+                enemies.put(id, PlayerFactory.getCharacter(id, new Vector2(x, y), name));
             }
             return enemies;
         } catch (JSONException e) {
@@ -99,8 +111,9 @@ public class Server implements Observer {
             String characterID = data.getString("id");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
+            int health = data.getInt("health");
             String direction = data.getString("direction");
-            gameContent.moveEnemy(characterID, x.floatValue(), y.floatValue(), direction);
+            gameContent.updateCharacter(characterID, x.floatValue(), y.floatValue(), direction, health);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
@@ -117,28 +130,43 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String id = data.getString("id");
-            float x =(float) data.getDouble("x");
-            float y = (float)data.getDouble("y");
+            float x = (float) data.getDouble("x");
+            float y = (float) data.getDouble("y");
 
             Player mainPlayer = new Player(id, userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
             mainPlayer.addObserver(this);
-            cn.SetPlayer(mainPlayer, getPlayersInServer(data.getJSONArray("players")));
+            connectionScreen.setPlayer(mainPlayer, getPlayersInServer(data.getJSONArray("players")));
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
     }
 
-    public void notifyMyLogin(){
+    public void notifyMyLogin() {
         socket.emit("addNewPlayer", this.getMainPlayerSelected());
+        this.showNotification(this.userInformation.getUsername() + " just logged in.");
     }
 
     public void update(JSONObject jsonObject) {
         socket.emit("playerMoved", jsonObject);
     }
 
+    public void update(String notification) {
+        this.showNotification(notification);
+    }
+
     public void update(Power power) {
         gameContent.addPower(power);
         socket.emit("playerAttack", power.toJson());
+    }
+
+    @Override
+    public void updateKill() {
+        this.showNotification("A player was killed.");
+    }
+
+    @Override
+    public void updateSkillChanged(String newSkill) {
+
     }
 
     public void destroyPower(Power power) {
@@ -154,5 +182,23 @@ public class Server implements Observer {
         } catch (Exception e) {
             throw new RuntimeException("Error - Json");
         }
+    }
+
+    public void showNotification(String notification) {
+        this.socket.emit("showNotification", this.notificationAsJson(notification));
+    }
+
+    private JSONObject notificationAsJson(String notification) {
+        JSONObject newNotification = new JSONObject();
+        try {
+            newNotification.put("notification", notification);
+            return newNotification;
+        } catch (JSONException e) {
+            throw new RuntimeException("Error - JSON Notification");
+        }
+    }
+
+    public void setGameHud(GameHud gameHud) {
+        this.gameHud = gameHud;
     }
 }
