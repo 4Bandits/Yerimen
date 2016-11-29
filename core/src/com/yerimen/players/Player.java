@@ -19,13 +19,14 @@ public class Player extends Character implements Observable {
     private double timer;
     private int currentSpeed;
     private Power power;
-
+    public Vector2 previousPost;
     public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
         super(characterID, playerTexture, playerStatus, position);
         this.nextInt = 0;
         this.currentSpeed = 1;
         this.power = power;
         this.cooldown = power.getCooldown();
+        this.previousPost = new Vector2(position.x, position.y) ;
     }
 
     @Override
@@ -64,7 +65,7 @@ public class Player extends Character implements Observable {
 
     private void processMove() {
         this.currentSpeed = 1;
-
+        this.previousPost.set(getXPosition(),getYPosition());
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             this.currentSpeed = 4;
         }

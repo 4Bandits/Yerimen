@@ -2,9 +2,12 @@ package com.yerimen.screens.game;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.yerimen.level.ICollisionable;
 import com.yerimen.level.Level;
 import com.yerimen.level.MiniMap;
 import com.yerimen.players.Character;
@@ -42,6 +45,12 @@ public class GameContent {
         mainPlayer.update(delta, camera);
         this.getEnemies().forEach(enemy -> enemy.update(delta, camera));
         this.getPowers().forEach(power -> power.update(delta, this.getAllPlayers(), this));
+        Rectangle r = mainPlayer.getBounds();
+        for (ICollisionable s : level.collisionables) {
+            if(s.isInCollision(r)){
+                mainPlayer.setPosition(mainPlayer.previousPost.x,mainPlayer.previousPost.y);
+            }
+        }
     }
 
     public void render(SpriteBatch batch, ShapeRenderer shapeRenderer) {
@@ -50,7 +59,7 @@ public class GameContent {
         this.getEnemies().forEach(player -> player.render(batch, shapeRenderer, Color.RED));
         this.getPowers().forEach(power -> power.render(batch));
         mainPlayer.render(batch, shapeRenderer, Color.BLUE);
-        this.miniMap.render(batch,shapeRenderer);
+        this.miniMap.render(batch, shapeRenderer);
     }
 
     public Player getMainPlayer() {
@@ -58,7 +67,7 @@ public class GameContent {
     }
 
     public void addEnemy(String enemyId, Vector2 position, String characterSelected) {
-        enemies.put(enemyId, PlayerFactory.getCharacter(enemyId,position,characterSelected));
+        enemies.put(enemyId, PlayerFactory.getCharacter(enemyId, position, characterSelected));
     }
 
     public void removeEnemy(String enemyId) {
@@ -88,7 +97,7 @@ public class GameContent {
         this.powers.remove(power);
     }
 
-    private List<Character> getAllPlayers(){
+    private List<Character> getAllPlayers() {
         List<Character> allPlayers = this.getEnemies();
         allPlayers.add(this.mainPlayer);
         return allPlayers;

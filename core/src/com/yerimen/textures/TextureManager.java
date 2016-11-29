@@ -21,6 +21,8 @@ public class TextureManager {
     private CharacterStatus rockmanStatus;
     private Texture fireBall;
     private Texture grass;
+    private Texture rock;
+    private Texture healthPlace;
     private Texture health;
     private Texture healthContainer;
     private Texture iceBall;
@@ -31,6 +33,8 @@ public class TextureManager {
         initializePowers();
         initializeBars();
         connectionBackground = new Texture("images/loading.png");
+        rock = new Texture("images/rock.png");
+        healthPlace = new Texture("images/health.png");
     }
 
     private void initializePowers() {
@@ -49,6 +53,7 @@ public class TextureManager {
         vampireTexture = new VampireTexture(vampire, 80);
         vampireStatus = new CharacterStatus();
         grass = new Texture("images/grass.jpg");
+
         rockman = new Texture("images/rockman.png");
         rockmanTexture = new VampireTexture(rockman, 80);
         rockmanStatus = new CharacterStatus();
@@ -114,6 +119,12 @@ public class TextureManager {
 
     public Texture getGrass() {
         return grass;
+    }
+    public Texture getRock() {
+        return rock;
+    }
+    public Texture getHealthPlace() {
+        return healthPlace;
     }
 
     public Texture getHealth() {
