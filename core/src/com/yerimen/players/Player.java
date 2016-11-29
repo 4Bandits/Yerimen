@@ -45,9 +45,11 @@ public class Player extends Character implements Observable {
     private void processSelectPower(){
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1) || Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
             this.setPower(PowerFactory.getPower(PowerType.Fireball));
+            this.notifySkillChanged("Fire");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_2) || Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
             this.setPower(PowerFactory.getPower(PowerType.Iceball));
+            this.notifySkillChanged("Ice");
         }
     }
 

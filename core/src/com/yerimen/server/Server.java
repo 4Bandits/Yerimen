@@ -163,6 +163,11 @@ public class Server implements Observer {
         this.showNotification("A player was killed.");
     }
 
+    @Override
+    public void updateSkillChanged(String newSkill) {
+
+    }
+
     public void destroyPower(Power power) {
         socket.emit("destroyPower", power.toJson());
     }

@@ -26,6 +26,8 @@ public interface Observable {
 
     default void notifyKill(){ this.observers.forEach(observer -> observer.updateKill()); }
 
+    default void notifySkillChanged(String newSkill){ this.observers.forEach(observer -> observer.updateSkillChanged(newSkill)); }
+
 }
 
 
