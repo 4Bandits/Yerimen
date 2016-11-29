@@ -47,9 +47,11 @@ public class Player extends Character implements Observable {
     private void processSelectPower() {
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_1) || Gdx.input.isKeyPressed(Input.Keys.NUM_1)) {
             this.setPower(PowerFactory.getPower(PowerType.Fireball));
+            this.notifySkillChanged("Fire");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.NUMPAD_2) || Gdx.input.isKeyPressed(Input.Keys.NUM_2)) {
             this.setPower(PowerFactory.getPower(PowerType.Iceball));
+            this.notifySkillChanged("Ice");
         }
     }
 
@@ -127,8 +129,16 @@ public class Player extends Character implements Observable {
         return this;
     }
 
-    public void increaseLife(int value) {
-        if (getStatus().getHp() < 100)
-            getStatus().increaseHp(value);
+    public void onDead() {
+        this.notifyKill();
     }
+
+    public void increaseLife(int value) {
+        if (getStatus().getHp() < 100){
+            getStatus().increaseHp(value);
+            this.notify(this.toJson());
+        }
+
+    }
+
 }
