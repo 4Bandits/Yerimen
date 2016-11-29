@@ -19,19 +19,12 @@ public class GameScreen extends YerimenScreen {
     private GameContent gameContent;
     private GameHud gameHud;
 
-    public GameScreen(ScreenManager gsm, Server server, Player player, HashMap<String, Character> enemies) {
-        super(gsm);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+    public GameScreen(ScreenManager gameScreenManager, Server server, Player player, HashMap<String, Character> enemies) {
+        super(gameScreenManager);
         this.gameContent = new GameContent(player, server, enemies);
-        this.gameHud = new GameHud();
+        this.gameHud = new GameHud(player, server);
 
         this.initializeCamera();
-    }
-
-    private void initializeCamera() {
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.update();
     }
 
     @Override
@@ -45,11 +38,10 @@ public class GameScreen extends YerimenScreen {
     }
 
     @Override
-    public void render(SpriteBatch sb, ShapeRenderer sr) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    public void render(SpriteBatch spriteBatch, SpriteBatch hudBatch, ShapeRenderer shapeRenderer) {
         this.updateCamera();
-        sb.setProjectionMatrix(camera.combined);
-        this.draw(sb, sr);
+        spriteBatch.setProjectionMatrix(camera.combined);
+        this.draw(spriteBatch, hudBatch, shapeRenderer);
     }
 
     @Override
@@ -57,11 +49,20 @@ public class GameScreen extends YerimenScreen {
 
     }
 
-    private void draw(SpriteBatch sb, ShapeRenderer sr) {
-        sb.begin();
-        this.gameContent.render(sb, sr);
-        this.gameHud.render(sb);
-        sb.end();
+    private void initializeCamera() {
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera.update();
+    }
+
+    private void draw(SpriteBatch spriteBatch, SpriteBatch hudBatch, ShapeRenderer shapeRenderer) {
+        spriteBatch.begin();
+        this.gameContent.render(spriteBatch, shapeRenderer);
+        spriteBatch.end();
+
+        hudBatch.begin();
+        this.gameHud.render(hudBatch);
+        hudBatch.end();
     }
 
     private void updateCamera() {

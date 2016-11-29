@@ -147,6 +147,7 @@ public class Character {
         if(this.isDead()){
             this.goToRespawnPoint();
             this.respawn();
+            this.onDead();
         }
     }
 
@@ -162,4 +163,7 @@ public class Character {
         this.getStatus().respawnd();
     }
 
+    protected void onDead() {
+
+    }
 }

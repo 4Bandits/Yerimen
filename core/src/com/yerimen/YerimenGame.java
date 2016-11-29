@@ -2,21 +2,19 @@ package com.yerimen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.yerimen.screens.ScreenManager;
-import com.yerimen.screens.game.GameContent;
 import com.yerimen.screens.mainMenu.MainMenuScreen;
 import com.yerimen.textures.TextureManager;
-import com.yerimen.user.UserInformation;
 
 public class YerimenGame extends Game {
 
 	private SpriteBatch batch;
 	private SpriteBatch hudBatch;
 	private ShapeRenderer shapeRenderer;
-	private ScreenManager gsm;
+	private ScreenManager gameScreenManager;
 
 	@Override
 	public void create () {
@@ -24,37 +22,16 @@ public class YerimenGame extends Game {
 		this.batch = new SpriteBatch();
 		this.hudBatch = new SpriteBatch();
 		this.shapeRenderer = new ShapeRenderer();
-		gsm = new ScreenManager();
-		gsm.push(new MainMenuScreen(gsm));
-		//this.setScreen(new MainMenuScreen(this));
+		this.gameScreenManager = new ScreenManager();
+
+		this.gameScreenManager.push(new MainMenuScreen(this.gameScreenManager));
 	}
 
 	@Override
 	public void render () {
-		gsm.update(Gdx.graphics.getDeltaTime());
-		gsm.render(batch, shapeRenderer);
-		//super.render();
-	}
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-	public SpriteBatch getBatch(){
-	    return this.batch;
-    }
-
-    public SpriteBatch getHudBatch() {
-    	return this.hudBatch;
-	}
-
-    public ShapeRenderer getShapeRenderer(){return this.shapeRenderer;}
-
-    public void setProjectionMatrix(Matrix4 matrix){
-        this.batch.setProjectionMatrix(matrix);
-    }
-
-	public void attemptConnectionTo(String serverUrl, UserInformation userInformation) {
-		//this.server.attemptConnectionTo(serverUrl, userInformation);
-	}
-
-	public void connect(GameContent gameContent) {
-		//this.server.connect(gameContent);
+		this.gameScreenManager.update(Gdx.graphics.getDeltaTime());
+		this.gameScreenManager.render(this.batch, this.hudBatch, this.shapeRenderer);
 	}
 }
