@@ -170,4 +170,8 @@ public class Character {
     public void setHealth(int health) {
         this.getStatus().setHp(health);
     }
+
+    public int getHp() {
+        return this.status.getHp();
+    }
 }

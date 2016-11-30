@@ -13,18 +13,21 @@ public class GameHud implements Observer {
 
     private NotificationManager notificationManager;
     private SkillBar skillBar;
+    private PlayerInformation playerInformation;
 
     public GameHud(Player player, Server server) {
-        this.notificationManager = new NotificationManager();
-        this.skillBar = new SkillBar();
-
         player.addObserver(this);
         server.setGameHud(this);
+
+        this.notificationManager = new NotificationManager();
+        this.skillBar = new SkillBar();
+        this.playerInformation = new PlayerInformation(player);
     }
 
     public void render(SpriteBatch spriteBatch) {
         this.notificationManager.render(spriteBatch);
         this.skillBar.render(spriteBatch);
+        this.playerInformation.render(spriteBatch);
     }
 
     public void showNotification(String notification) {
