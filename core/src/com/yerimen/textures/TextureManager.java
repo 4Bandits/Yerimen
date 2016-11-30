@@ -35,7 +35,7 @@ public class TextureManager {
 
     private void initializePowers() {
         fireBall = new Texture("images/fireball.png");
-        iceBall = new Texture("images/iceBall.png");
+        iceBall = new Texture("images/iceball.png");
     }
 
     private void initializePlayerTextures() {

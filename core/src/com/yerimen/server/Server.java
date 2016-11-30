@@ -42,6 +42,9 @@ public class Server implements Observer {
         this.gameContent = gameContent;
         gameContent.setServer(this);
     }
+    public UserInformation getUserInformation(){
+        return userInformation;
+    }
 
     private void configSocketEvents() {
         socket
@@ -49,7 +52,8 @@ public class Server implements Observer {
                 .on("registerNewPlayer", this::registerNewPlayer)
                 .on("playerDisconnected", this::playerDisconnected)
                 .on("playerMoved", this::playerMoved)
-                .on("playerAttack", this::playerAttack);
+                .on("playerAttack", this::playerAttack)
+                .on("getUsernames", this::getUsernames);
     }
 
 
@@ -57,10 +61,12 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String id = data.getString("id");
+            String userName= data.getString("username");
             String character = data.getString("character");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
-            gameContent.addEnemy(id, new Vector2(x.floatValue(), y.floatValue()), character);
+            gameContent.addEnemy(id, new Vector2(x.floatValue(), y.floatValue()), character,args);
+            gameContent.registerEnemyUsername(id,userName);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -90,6 +96,17 @@ public class Server implements Observer {
             return enemies;
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Get All Players Error");
+        }
+    }
+    private void getUsernames(Object[] args) {
+        JSONObject data= (JSONObject)args[0];
+        try {
+                String id = data.getString("id");
+                String username = data.getString("username");
+                gameContent.registerEnemyUsername(id, username);
+
+        } catch (JSONException e) {
+            throw new RuntimeException("SocketIO - Get All Usernames Error");
         }
     }
 
@@ -123,6 +140,7 @@ public class Server implements Observer {
             Player mainPlayer = new Player(id, userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
             mainPlayer.addObserver(this);
             cn.SetPlayer(mainPlayer, getPlayersInServer(data.getJSONArray("players")));
+
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Move Character Error");
         }
@@ -130,10 +148,12 @@ public class Server implements Observer {
 
     public void notifyMyLogin(){
         socket.emit("addNewPlayer", this.getMainPlayerSelected());
+
     }
 
     public void update(JSONObject jsonObject) {
         socket.emit("playerMoved", jsonObject);
+
     }
 
     public void update(Power power) {
@@ -150,6 +170,7 @@ public class Server implements Observer {
         try {
             data.put("name", this.userInformation.getUsername());
             data.put("character", this.userInformation.getCharacter());
+            data.put("username",this.userInformation.getUsername());
             return data;
         } catch (Exception e) {
             throw new RuntimeException("Error - Json");

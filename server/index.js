@@ -5,6 +5,7 @@ var self;
 
 var players = [];
 var powers = [];
+var usernames = {};
 
 server.listen(9000, function(){
 	log("Yerimen Server started.");
@@ -18,7 +19,10 @@ io.on('connection', function(socket){
 	    var info = getStartedInfo(socket);
         socket.emit('getStartedInfo', info);
 	    addNewPlayer(socket, info.x, info.y, data.name, data.character);
-	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y});
+	    addUsernameById(socket.id,data.username,socket);
+
+	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y, username:data.username});
+	    socket.broadcast.emit("getUsernames", { id: socket.id, username:data.username});
 	});
 
 	socket.on('playerMoved', function(data){
@@ -30,7 +34,9 @@ io.on('connection', function(socket){
         socket.broadcast.emit('playerAttack', data);
         powers.push(data);
 	});
-
+    socket.on('getUsernames',function(data){
+        socket.broadcast.emit('getUsernames', data);
+    });
 	socket.on('takeDamage', function(data){
         socket.broadcast.emit('takeDamage', data);
         updatePlayer(data);
@@ -66,6 +72,12 @@ function currentTimestamp() {
 function addNewPlayer(socket, x, y, name, character) {
     players.push(new Player(socket.id, x,y, 100, 'right', name, character));
     log("Player with ID [" + socket.id + "] just logged in.");
+}
+
+function addUsernameById(id,username,socket) {
+    usernames[id]=username;
+    socket.broadcast.emit('getUsernames', [{id:username}]);
+    log("Player with ID [" + id + "] and Username ["+username+"] just logged in.");
 }
 
 function updatePlayer(data){
@@ -105,8 +117,10 @@ function getStartedInfo(socket){
                 y: vector2.y,
                 players,
                 powers
+
            }
 }
+
 
 function Vector2d(x, y){
     this.x = x;

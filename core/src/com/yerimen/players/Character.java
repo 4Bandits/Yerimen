@@ -10,11 +10,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.yerimen.bars.HealthBar;
 import com.yerimen.json.PlayerJsonBuilder;
+import com.yerimen.powers.Power;
+import com.yerimen.screens.game.GameContent;
 import com.yerimen.textures.PlayerTexture;
 import org.json.JSONObject;
 
 public class Character {
 
+    private  String userName;
     private String characterID;
     private CharacterStatus status;
     protected PlayerTexture playerTexture;
@@ -142,9 +145,10 @@ public class Character {
         return new Rectangle(getXPosition() + 22, getYPosition(), 30, 65);
     }
 
-    public void isAttacked(int damage) {
-        getStatus().subtractHp(damage);
+    public void isAttacked(Power power,GameContent gameContent) {
+        getStatus().subtractHp(power.getDamage());
         if(this.isDead()){
+            gameContent.registerKillOfTo(power.getCharacterID(),this);
             this.goToRespawnPoint();
             this.respawn();
         }
