@@ -9,8 +9,8 @@ public class SkillBar {
     private Skill iceSkill;
 
     public SkillBar() {
-        this.fireSkill = new Skill(150, 50, "1", TextureManager.getInstance().getFireBall());
-        this.iceSkill = new Skill(250, 50, "2", TextureManager.getInstance().getIceBall());
+        this.fireSkill = new Skill(180, 50, "1", TextureManager.getInstance().getFireBallSkillImage());
+        this.iceSkill = new Skill(250, 50, "2", TextureManager.getInstance().getIceBallSkillImage());
 
         // Initial Skill Bar configuration.
         this.fireSkill.show();
