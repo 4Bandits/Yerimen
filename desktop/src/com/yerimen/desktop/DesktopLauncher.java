@@ -15,7 +15,6 @@ public class DesktopLauncher {
 
 	private static LwjglApplicationConfiguration gameConfiguration() {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        //config.useGL30 = true;
         config.fullscreen = false;
         config.vSyncEnabled = true;
         config.title = "Yerimen";

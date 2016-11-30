@@ -1,21 +1,14 @@
 package com.yerimen.level;
 
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.yerimen.players.Character;
 import com.yerimen.players.Player;
 
-public class LevelHelth extends LevelElement implements ICollisionable {
-
-    public LevelHelth(Texture texture, float x, float y) {
+public class Wall extends LevelElement implements ICollisionable {
+    public Wall(Texture texture, float x, float y) {
         super(texture, x, y);
-    }
-
-    @Override
-    public void render(SpriteBatch batch) {
-        this.sprite.draw(batch);
     }
 
     @Override
@@ -30,6 +23,11 @@ public class LevelHelth extends LevelElement implements ICollisionable {
 
     @Override
     public void crashed(Player mainPlayer) {
-        mainPlayer.increaseLife(1);
+        mainPlayer.setPosition(mainPlayer.previousPost.x, mainPlayer.previousPost.y);
+    }
+
+    @Override
+    public void render(SpriteBatch batch) {
+        this.sprite.draw(batch);
     }
 }

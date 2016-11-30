@@ -12,10 +12,11 @@ public class Level {
     final Sprite[][] matrix = new Sprite[100][100];
 
     public ArrayList<LevelElement> collisionables;
+
     public Level(Texture texture) {
         collisionables = new ArrayList<>();
         Texture wallTexture = TextureManager.getInstance().getWall();
-        Texture healthTexture = TextureManager.getInstance().getHealthPlace();
+        Texture healthTexture = TextureManager.getInstance().getHospital();
 
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 50; j++) {
@@ -24,16 +25,37 @@ public class Level {
             }
         }
         //added health places
-        collisionables.add(new LevelHelth(healthTexture,150,150));
-        collisionables.add(new LevelHelth(healthTexture,2900,2900));
+        collisionables.add(new Hospital(healthTexture, 200, 100));
+        collisionables.add(new Hospital(healthTexture, 2900, 3000));
 
         //add some walls
-        collisionables.add(new LevelWall(wallTexture, 300,600));
-        collisionables.add(new LevelWall(wallTexture, 364,600));
-        collisionables.add(new LevelWall(wallTexture, 428,600));
-        collisionables.add(new LevelWall(wallTexture, 500,600));
-        collisionables.add(new LevelWall(wallTexture, 564,600));
-        collisionables.add(new LevelWall(wallTexture, 628,600));
+        for (int i = 0; i < 10; i++) {
+            if(i % 2 == 1){
+                int x = i * 100;
+                collisionables.add(new Wall(wallTexture, x, 600));
+                collisionables.add(new Wall(wallTexture, x + 64, 600));
+                collisionables.add(new Wall(wallTexture, x + 128, 600));
+            }
+        }
+
+        for (int i = 0; i < 10; i++) {
+            if(i % 2 == 1){
+                int x = (i * 100) + 2000 ;
+                collisionables.add(new Wall(wallTexture, x, 2400));
+                collisionables.add(new Wall(wallTexture, x + 64, 2400));
+                collisionables.add(new Wall(wallTexture, x + 128, 2400));
+            }
+        }
+
+        collisionables.add(new Tower(TextureManager.getInstance().getTowerBlue(),500,200));
+        collisionables.add(new Tower(TextureManager.getInstance().getTowerRed(),2500,2800));
+
+      /*  collisionables.add(new Wall(wallTexture, 100,600));
+        collisionables.add(new Wall(wallTexture, 164,600));
+        collisionables.add(new Wall(wallTexture, 228,600));
+        collisionables.add(new Wall(wallTexture, 300,600));
+        collisionables.add(new Wall(wallTexture, 364,600));
+        collisionables.add(new Wall(wallTexture, 428,600));*/
     }
 
     public void render(SpriteBatch batch) {

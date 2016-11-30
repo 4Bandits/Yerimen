@@ -22,7 +22,9 @@ public class TextureManager {
     private Texture fireBall;
     private Texture grass;
     private Texture wall;
-    private Texture healthPlace;
+    private Texture hospital;
+    private Texture towerBlue;
+    private Texture towerRed;
     private Texture health;
     private Texture healthContainer;
     private Texture iceBall;
@@ -32,9 +34,8 @@ public class TextureManager {
         initializePlayerTextures();
         initializePowers();
         initializeBars();
+        initializeLevelTextures();
         connectionBackground = new Texture("images/loading.png");
-        wall = new Texture("images/wall.png");
-        healthPlace = new Texture("images/health.png");
     }
 
     private void initializePowers() {
@@ -52,7 +53,7 @@ public class TextureManager {
         vampire = new Texture("images/rat.png");
         vampireTexture = new VampireTexture(vampire, 80);
         vampireStatus = new CharacterStatus();
-        grass = new Texture("images/grass.jpg");
+
 
         rockman = new Texture("images/rockman.png");
         rockmanTexture = new VampireTexture(rockman, 80);
@@ -62,6 +63,14 @@ public class TextureManager {
     private void initializeBars() {
         health = new Texture("images/healthbar.png");
         healthContainer = new Texture("images/healthbarContainer.png");
+    }
+
+    private void initializeLevelTextures(){
+        grass = new Texture("images/grass.jpg");
+        wall = new Texture("images/wall.png");
+        hospital = new Texture("images/health.png");
+        towerBlue = new Texture("images/tower blue.png");
+        towerRed = new Texture("images/tower red.png");
     }
 
     public static TextureManager getInstance() {
@@ -123,8 +132,14 @@ public class TextureManager {
     public Texture getWall() {
         return wall;
     }
-    public Texture getHealthPlace() {
-        return healthPlace;
+    public Texture getHospital() {
+        return hospital;
+    }
+    public Texture getTowerBlue() {
+        return towerBlue;
+    }
+    public Texture getTowerRed() {
+        return towerRed;
     }
 
     public Texture getHealth() {
