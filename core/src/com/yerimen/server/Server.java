@@ -133,7 +133,7 @@ public class Server implements Observer {
             float x = (float) data.getDouble("x");
             float y = (float) data.getDouble("y");
 
-            Player mainPlayer = new Player(id, userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
+            Player mainPlayer = new Player(id, userInformation.getUsername(), userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
             mainPlayer.addObserver(this);
             connectionScreen.setPlayer(mainPlayer, getPlayersInServer(data.getJSONArray("players")));
         } catch (JSONException e) {

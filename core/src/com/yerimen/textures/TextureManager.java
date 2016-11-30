@@ -27,14 +27,22 @@ public class TextureManager {
     private Texture healthContainer;
     private Texture iceBall;
     private Texture connectionBackground;
+    private Texture iceBallSkillImage;
+    private Texture fireBallSkillImage;
 
     private TextureManager(){
         initializePlayerTextures();
         initializePowers();
         initializeBars();
+        initializeSkillsImages();
         connectionBackground = new Texture("images/loading.png");
         wall = new Texture("images/wall.png");
         healthPlace = new Texture("images/health.png");
+    }
+
+    private void initializeSkillsImages() {
+        fireBallSkillImage = new Texture("images/Fire Skill.png");
+        iceBallSkillImage = new Texture("images/Ice Skill.png");
     }
 
     private void initializePowers() {
@@ -140,5 +148,13 @@ public class TextureManager {
 
     public Texture getConnectionBackground() {
         return connectionBackground;
+    }
+
+    public Texture getIceBallSkillImage() {
+        return iceBallSkillImage;
+    }
+
+    public Texture getFireBallSkillImage() {
+        return fireBallSkillImage;
     }
 }

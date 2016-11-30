@@ -14,6 +14,7 @@ import com.yerimen.textures.PlayerTexture;
 
 public class Player extends Character implements Observable {
 
+    private String name;
     private Integer nextInt;
     private float cooldown;
     private double timer;
@@ -21,8 +22,9 @@ public class Player extends Character implements Observable {
     private Power power;
     public Vector2 previousPost;
 
-    public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
+    public Player(String characterID, String name, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
         super(characterID, playerTexture, playerStatus, position);
+        this.name = name;
         this.nextInt = 0;
         this.currentSpeed = 1;
         this.power = power;
@@ -141,4 +143,8 @@ public class Player extends Character implements Observable {
 
     }
 
+    @Override
+    public String getName() {
+        return name;
+    }
 }
