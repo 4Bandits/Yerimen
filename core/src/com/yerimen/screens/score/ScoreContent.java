@@ -6,9 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.yerimen.YerimenGame;
 import com.yerimen.players.Player;
-import com.yerimen.screens.YerimenScreen;
 import com.yerimen.screens.game.GameContent;
 
 

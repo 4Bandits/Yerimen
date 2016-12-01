@@ -158,7 +158,6 @@ public class Character {
             this.onDead();
         }
     }
-
     private boolean isDead(){
         return this.getStatus().getHp() <= 0;
     }

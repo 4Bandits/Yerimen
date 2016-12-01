@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.yerimen.screens.ScreenManager;
 import com.yerimen.screens.mainMenu.MainMenuScreen;
+import com.yerimen.sounds.SoundManager;
 import com.yerimen.textures.TextureManager;
 
 public class YerimenGame extends Game {
@@ -19,6 +20,7 @@ public class YerimenGame extends Game {
 	@Override
 	public void create () {
         TextureManager.getInstance();
+		SoundManager.getInstance();
 		this.batch = new SpriteBatch();
 		this.hudBatch = new SpriteBatch();
 		this.shapeRenderer = new ShapeRenderer();

@@ -109,8 +109,9 @@ public abstract class Power extends Sprite {
 
     public abstract PowerType getType();
 
-    public int getDamage(){
-        return damage;
-    }
+    public abstract void reproduceSound();
 
+	 public int getDamage(){
+	        return damage;
+	    }
 }
