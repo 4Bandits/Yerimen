@@ -38,11 +38,11 @@ public class ScoreContent {
     }
     public void drawTable(){
         Player mainPlayer=gameContent.getMainPlayer();
-        Label mainLabel = new Label(gameContent.getUsernameById(mainPlayer.getId())+"   "+gameContent.killsFor(mainPlayer)+" / "+gameContent.deathsFor(mainPlayer),skin);
+        Label mainLabel = new Label(mainPlayer.getUserName()+"   "+gameContent.killsFor(mainPlayer)+" / "+gameContent.deathsFor(mainPlayer),skin);
         this.table.add(mainLabel).uniform().colspan(4);
         this.table.row().space(10);
         gameContent.getEnemies().forEach(p ->{
-            Label pLabel = new Label(gameContent.getUsernameById(p.getId())+"   "+gameContent.killsFor(p)+" / "+gameContent.deathsFor(p),skin);
+            Label pLabel = new Label(p.getUserName()+"   "+gameContent.killsFor(p)+" / "+gameContent.deathsFor(p),skin);
             this.table.add(pLabel).uniform().colspan(4);
             this.table.row().space(10);
         });

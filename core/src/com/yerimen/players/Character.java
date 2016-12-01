@@ -29,7 +29,7 @@ public class Character {
     protected HealthBar healthBar;
     protected Vector2 respawndPoint;
 
-    public Character(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position) {
+    public Character(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position,String userName) {
         this.characterID = characterID;
         this.sprite = new Sprite(playerTexture.getTexture());
         this.playerTexture = playerTexture;
@@ -40,6 +40,10 @@ public class Character {
         this.isMoving = false;
         this.healthBar = new HealthBar(position.x, position.y, 5, 70);
         this.respawndPoint = position;
+        this.userName=userName;
+    }
+    public String getUserName(){
+        return userName;
     }
 
     public String getId() {

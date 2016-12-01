@@ -20,13 +20,16 @@ public class Player extends Character implements Observable {
     private int currentSpeed;
     private Power power;
 
-    public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
-        super(characterID, playerTexture, playerStatus, position);
+
+    public Player(String characterID, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power,String userName) {
+        super(characterID, playerTexture, playerStatus, position,userName);
         this.nextInt = 0;
         this.currentSpeed = 1;
         this.power = power;
         this.cooldown = power.getCooldown();
+
     }
+
 
     @Override
     public void update(float delta, OrthographicCamera camera) {

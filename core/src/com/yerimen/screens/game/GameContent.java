@@ -65,14 +65,9 @@ public class GameContent {
     public void registerUsername(String userName){
         userNames.put(getMainPlayer().getId(),userName);
     }
-    public void registerEnemyUsername(String id,String userName){
-        userNames.put(id,userName);
-    }
-    public void addEnemy(String enemyId, Vector2 position, String characterSelected, Object[] args) {
-        enemies.put(enemyId, PlayerFactory.getCharacter(enemyId,position,characterSelected));
-    }
-    public String getUsernameById(String id){
-                                                    return userNames.get(id);
+
+    public void addEnemy(String enemyId, Vector2 position, String characterSelected, String userName) {
+        enemies.put(enemyId, PlayerFactory.getCharacter(enemyId,position,characterSelected,userName));
     }
 
     public void removeEnemy(String enemyId) {

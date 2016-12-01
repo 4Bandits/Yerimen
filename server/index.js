@@ -5,7 +5,6 @@ var self;
 
 var players = [];
 var powers = [];
-var usernames = {};
 
 server.listen(9000, function(){
 	log("Yerimen Server started.");
@@ -19,10 +18,7 @@ io.on('connection', function(socket){
 	    var info = getStartedInfo(socket);
         socket.emit('getStartedInfo', info);
 	    addNewPlayer(socket, info.x, info.y, data.name, data.character);
-	    addUsernameById(socket.id,data.username,socket);
-
-	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y, username:data.username});
-	    socket.broadcast.emit("getUsernames", { id: socket.id, username:data.username});
+	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y, name:data.name});
 	});
 
 	socket.on('playerMoved', function(data){
@@ -34,9 +30,7 @@ io.on('connection', function(socket){
         socket.broadcast.emit('playerAttack', data);
         powers.push(data);
 	});
-    socket.on('getUsernames',function(data){
-        socket.broadcast.emit('getUsernames', data);
-    });
+
 	socket.on('takeDamage', function(data){
         socket.broadcast.emit('takeDamage', data);
         updatePlayer(data);
@@ -74,11 +68,7 @@ function addNewPlayer(socket, x, y, name, character) {
     log("Player with ID [" + socket.id + "] just logged in.");
 }
 
-function addUsernameById(id,username,socket) {
-    usernames[id]=username;
-    socket.broadcast.emit('getUsernames', [{id:username}]);
-    log("Player with ID [" + id + "] and Username ["+username+"] just logged in.");
-}
+
 
 function updatePlayer(data){
     forPlayer(data.id, function(player, index) {
