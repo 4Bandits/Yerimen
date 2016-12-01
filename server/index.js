@@ -22,7 +22,7 @@ io.on('connection', function(socket){
 	    var info = getStartedInfo(socket);
         socket.emit('getStartedInfo', info);
 	    addNewPlayer(socket, info.x, info.y, data.name, data.character);
-	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y});
+	    socket.broadcast.emit("registerNewPlayer", { id: socket.id, character: data.character, x: info.x, y: info.y, name:data.name});
 	});
 
 	socket.on('playerMoved', function(data){
@@ -72,6 +72,8 @@ function addNewPlayer(socket, x, y, name, character) {
     log("Player with ID [" + socket.id + "] just logged in.");
 }
 
+
+
 function updatePlayer(data){
     forPlayer(data.id, function(player, index) {
        player.x = data.x;
@@ -109,8 +111,10 @@ function getStartedInfo(socket){
                 y: vector2.y,
                 players,
                 powers
+
            }
 }
+
 
 function Vector2d(x, y){
     this.x = x;

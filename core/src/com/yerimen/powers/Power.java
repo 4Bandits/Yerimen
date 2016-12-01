@@ -90,7 +90,7 @@ public abstract class Power extends Sprite {
         for (Character player : players) {
             if (this.isInCollision(player)) {
                 this.notifyCollision(gameContent);
-                player.isAttacked(this.damage);
+                player.isAttacked(this,gameContent);
             }
         }
     }
@@ -108,5 +108,9 @@ public abstract class Power extends Sprite {
     }
 
     public abstract PowerType getType();
+
+    public int getDamage(){
+        return damage;
+    }
 
 }

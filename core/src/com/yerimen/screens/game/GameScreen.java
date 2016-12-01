@@ -1,6 +1,7 @@
 package com.yerimen.screens.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ import com.yerimen.players.Character;
 import com.yerimen.players.Player;
 import com.yerimen.screens.ScreenManager;
 import com.yerimen.screens.YerimenScreen;
+import com.yerimen.screens.score.ScoreScreen;
 import com.yerimen.server.Server;
 
 import java.util.HashMap;
@@ -22,20 +24,26 @@ public class GameScreen extends YerimenScreen {
     public GameScreen(ScreenManager gameScreenManager, Server server, Player player, HashMap<String, Character> enemies) {
         super(gameScreenManager);
         this.gameContent = new GameContent(player, server, enemies);
-        this.gameHud = new GameHud(player, server);
+        this.gameContent.registerUsername(server.getUserInformation().getUsername());
+        this.gameHud = new GameHud();
 
         this.initializeCamera();
     }
 
     @Override
     protected void handleInput() {
+        if(Gdx.input.isKeyPressed(Input.Keys.TAB)){
+            gsm.push(new ScoreScreen(gameContent,gsm));
+        }
 
     }
 
     public void update(float delta) {
         this.gameContent.update(delta, camera);
         this.updateCamera();
+        this.handleInput();
     }
+
 
     @Override
     public void render(SpriteBatch spriteBatch, SpriteBatch hudBatch, ShapeRenderer shapeRenderer) {
