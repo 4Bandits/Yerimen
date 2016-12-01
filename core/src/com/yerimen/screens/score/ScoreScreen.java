@@ -25,13 +25,6 @@ public class ScoreScreen extends YerimenScreen{
         Gdx.input.setInputProcessor(stage);
         this.stage.addActor(this.content.getContent());
     }
-    @Override
-    public void render(SpriteBatch sb, ShapeRenderer sr) {
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        this.stage.act();
-        this.stage.draw();
-    }
 
     private void initializeCamera(){
         this.camera = new OrthographicCamera();
@@ -47,10 +40,17 @@ public class ScoreScreen extends YerimenScreen{
     @Override
     public void update(float delta) {
         if(!Gdx.input.isKeyPressed(Input.Keys.TAB)){
-            gsm.pop();
+            gameScreenManager.pop();
             //gsm.push(new ScoreScreen(gameContent,gsm));
         }
 
+    }
+
+    @Override
+    public void render(SpriteBatch spriteBatch, SpriteBatch hudBatch, ShapeRenderer shapeRenderer) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        this.stage.act();
+        this.stage.draw();
     }
 
 

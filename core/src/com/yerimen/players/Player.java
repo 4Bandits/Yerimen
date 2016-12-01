@@ -22,8 +22,8 @@ public class Player extends Character implements Observable {
     private Power power;
     public Vector2 previousPost;
 
-    public Player(String characterID, String name, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power) {
-        super(characterID, playerTexture, playerStatus, position);
+    public Player(String characterID, String name, PlayerTexture playerTexture, CharacterStatus playerStatus, Vector2 position, Power power, String userName) {
+        super(characterID, playerTexture, playerStatus, position,userName);
         this.name = name;
         this.nextInt = 0;
         this.currentSpeed = 1;

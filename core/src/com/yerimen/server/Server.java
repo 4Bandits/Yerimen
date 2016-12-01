@@ -69,10 +69,11 @@ public class Server implements Observer {
         JSONObject data = (JSONObject) args[0];
         try {
             String id = data.getString("id");
+            String userName = data.getString("name");
             String character = data.getString("character");
             Double x = data.getDouble("x");
             Double y = data.getDouble("y");
-            gameContent.addEnemy(id, new Vector2(x.floatValue(), y.floatValue()), character);
+            gameContent.addEnemy(id, new Vector2(x.floatValue(), y.floatValue()), character,userName);
         } catch (JSONException e) {
             throw new RuntimeException("SocketIO - Adding new Character Error");
         }
@@ -95,9 +96,10 @@ public class Server implements Observer {
             for (int i = 0; i < args.length(); i++) {
                 float x = ((Double) args.getJSONObject(i).getDouble("x")).floatValue();
                 float y = ((Double) args.getJSONObject(i).getDouble("y")).floatValue();
-                String name = args.getJSONObject(i).getString("character");
+                String character = args.getJSONObject(i).getString("character");
                 String id = args.getJSONObject(i).getString("id");
-                enemies.put(id, PlayerFactory.getCharacter(id, new Vector2(x, y), name));
+                String name = args.getJSONObject(i).getString("name");
+                enemies.put(id, PlayerFactory.getCharacter(id, new Vector2(x, y), character,name));
             }
             return enemies;
         } catch (JSONException e) {
@@ -133,7 +135,7 @@ public class Server implements Observer {
             float x = (float) data.getDouble("x");
             float y = (float) data.getDouble("y");
 
-            Player mainPlayer = new Player(id, userInformation.getUsername(), userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball));
+            Player mainPlayer = new Player(id, userInformation.getUsername(), userInformation.getPlayerTexture(), userInformation.getPlayerTextureStatus(), new Vector2(x, y), PowerFactory.getPower(PowerType.Fireball), userInformation.getUsername());
             mainPlayer.addObserver(this);
             connectionScreen.setPlayer(mainPlayer, getPlayersInServer(data.getJSONArray("players")));
         } catch (JSONException e) {
